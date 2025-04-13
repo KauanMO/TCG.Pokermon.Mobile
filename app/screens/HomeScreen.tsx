@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { UserInfo } from "../types/user";
+import { UserInfo } from "../types/UserType";
 import { StyleSheet, Text, View } from "react-native";
-import { getUserInfo } from "../api/users";
+import Users from "../api/users";
 
 export default function HomeScreen() {
     const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
 
     useEffect(() => {
         const requestUserInfo = async () => {
-            const response = await getUserInfo();
+            const response = await Users.getUserInfo();
 
             setUserInfo(response);
         }

@@ -1,14 +1,14 @@
 import { getUserId } from '@/services/storage';
-import { LoginRequest, LoginResponse, UserInfo } from '../types/user';
-import { baseUrl } from './config';
-import { userInfoMock } from './mock';
+import { LoginRequest, LoginResponse, UserInfo } from '../types/UserType';
+import Config from './config';
+import Mock from './mock';
 import axios from 'axios';
 
-const defaultUrl: string = `${baseUrl}/users`;
+const baseUrl: string = `${Config.baseUrl}/users`;
 
-export const login = async (data: LoginRequest): Promise<LoginResponse | null> => {
+const login = async (data: LoginRequest): Promise<LoginResponse | null> => {
     try {
-        const response = await axios.post<LoginResponse>(`${defaultUrl}/login`,
+        const response = await axios.post<LoginResponse>(`${baseUrl}/login`,
             data
         );
 
@@ -18,12 +18,17 @@ export const login = async (data: LoginRequest): Promise<LoginResponse | null> =
     }
 }
 
-export const getUserInfo = async (): Promise<UserInfo | null> => {
+const getUserInfo = async (): Promise<UserInfo | null> => {
     try {
-        const response = await axios.get(`${defaultUrl}/${getUserId()}`);
+        const response = await axios.get(`${baseUrl}/${getUserId()}`);
 
         return response.data;
     } catch (e) {
-        return userInfoMock;
+        return Mock.userInfoMock;
     }
+}
+
+export default {
+    login,
+    getUserInfo
 }

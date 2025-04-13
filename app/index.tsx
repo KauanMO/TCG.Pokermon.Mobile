@@ -4,9 +4,13 @@ import HomeScreen from "./screens/HomeScreen";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import ShopScreen from "./screens/ShopScreen";
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import CardsScreen from "./screens/CardsScreen";
+import { RootStackParamList } from "./types/RootStack";
+import { NavigationProp } from "@react-navigation/native";
 
 const Stack = createNativeStackNavigator();
-const Tab = createBottomTabNavigator();
+const Tab = createBottomTabNavigator<RootStackParamList>();
+export type TabNavigation = NavigationProp<RootStackParamList>;
 
 function TabNavigator() {
     return (
@@ -38,7 +42,7 @@ function TabNavigator() {
             tabBarActiveTintColor: 'tomato',
             tabBarInactiveTintColor: 'gray'
         })}>
-            <Tab.Screen name="Cards" component={ShopScreen} options={{ headerShown: false }} />
+            <Tab.Screen name="Cards" component={CardsScreen} options={{ headerShown: false }} />
             <Tab.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
             <Tab.Screen name="Shop" component={ShopScreen} options={{ headerShown: false }} />
         </Tab.Navigator>

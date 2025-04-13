@@ -1,5 +1,5 @@
 const baseUrl = 'http://localhost:8080'
 
-export {
+export default {
     baseUrl
 }

@@ -1,17 +1,25 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
-import { login } from '../api/users';
+import Users from '../api/users';
 import { saveUserId } from "@/services/storage";
-import { LoginResponse } from "../types/user";
+import { LoginResponse } from "../types/UserType";
 import { Button, StyleSheet, Text, TextInput, View } from "react-native";
 import { getUserId } from "@/services/storage";
 
 export default function LoginScreen() {
     const navigation = useNavigation();
 
-    if (getUserId() != null) {
-        navigation.navigate('Main' as never);
-    }
+    useEffect(() => {
+        const checkUser = async () => {
+            const userId = await getUserId();
+            if (userId != null) {
+                navigation.navigate('Main' as never);
+            }
+        };
+
+        checkUser();
+    }, [])
+
 
     const [formData, setFormData] = useState({
         email: 'kauaanmatheus@gmail.com',
@@ -27,7 +35,7 @@ export default function LoginScreen() {
     const sendLogin = async () => {
         setLoading(true);
 
-        const response: LoginResponse | null = await login(formData);
+        const response: LoginResponse | null = await Users.login(formData);
 
         await saveUserId(response ? response.id : 1);
 
