@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Image, StyleSheet, Text, View } from "react-native";
+import { Image, StyleSheet, Text, Touchable, TouchableOpacity, View } from "react-native";
 import GoBackIcon from "../components/Icons/GoBackIcon";
 import { CardSetCards } from "../types/CardSetType";
 import CardSets from "../api/cardsets";
@@ -20,14 +20,19 @@ export default function CardSetScreen({ id }: { id: number }) {
         }
 
         requestCardSetById();
-    }, []);
+    }, [cardsPage]);
 
     const styles = StyleSheet.create({
+        container: {
+            width: '100%',
+            height: '100%',
+            position: 'relative'
+        },
         cardSetLogo: {
             width: 200,
             height: 50,
             position: 'absolute',
-            top: 0,
+            top: 10,
             left: 100
         },
         pageController: {
@@ -37,10 +42,21 @@ export default function CardSetScreen({ id }: { id: number }) {
             width: '100%',
             justifyContent: 'center',
             marginTop: 20
+        },
+        pageControllerText: {
+            fontSize: 20
         }
     });
 
-    return <View>
+    const nextPage = () => {
+        if (cardsPage + 1 <= cardsTotalPages) setCardsPage(cardsPage + 1);
+    }
+
+    const backPage = () => {
+        if (cardsPage - 1 > 0) setCardsPage(cardsPage - 1);
+    }
+
+    return <View style={styles.container}>
         <GoBackIcon />
 
         <Image
@@ -54,13 +70,14 @@ export default function CardSetScreen({ id }: { id: number }) {
             marginTop={70}
         />
 
-        {
-            // TO-DO that two onpress expresions is not working
-        }
         <View style={styles.pageController}>
-            <Text onPress={() => { if (cardsPage - 1 > 0) setCardsPage(cardsPage - 1) }}>{'<'}</Text>
-            <Text>Página {cardsPage}/{cardsTotalPages}</Text>
-            <Text onPress={() => { if (cardsPage + 1 <= 0) setCardsPage(cardsPage + 1) }}>{'>'}</Text>
+            <TouchableOpacity onPress={backPage}>
+                <Text style={styles.pageControllerText}>{'<'}</Text>
+            </TouchableOpacity>
+            <Text style={styles.pageControllerText}>Página {cardsPage}/{cardsTotalPages}</Text>
+            <TouchableOpacity onPress={nextPage}>
+                <Text style={styles.pageControllerText}>{'>'}</Text>
+            </TouchableOpacity>
         </View>
     </View>
 }
