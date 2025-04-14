@@ -1,7 +1,7 @@
-import { CardSetInfo } from "../types/CardSetType";
+import { CardSetCards, CardSetInfo } from "../types/CardSetType";
 import { UserInfo } from "../types/UserType";
 
-const cardSetMock : CardSetInfo[] = [
+const cardSetMock: CardSetInfo[] = [
     {
         "id": 1,
         "externalId": "gym2",
@@ -84,7 +84,7 @@ const myCardsMock = [
     }
 ]
 
-const cardSetCardsMock = [
+const cardSetCardsMock: CardSetCards[] = [
     {
         "cardSet": {
             "id": 1,

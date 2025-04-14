@@ -1,16 +1,18 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { RootStackParamList, RootTabParamList } from "./types/ParamList";
+import { NavigationProp } from "@react-navigation/native";
 import LoginScreen from "./screens/LoginScreen";
 import HomeScreen from "./screens/HomeScreen";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import ShopScreen from "./screens/ShopScreen";
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import CardsScreen from "./screens/CardsScreen";
-import { RootStackParamList } from "./types/RootStack";
-import { NavigationProp } from "@react-navigation/native";
+import CardSetScreen from "./screens/CardSetScreen";
 
-const Stack = createNativeStackNavigator();
-const Tab = createBottomTabNavigator<RootStackParamList>();
-export type TabNavigation = NavigationProp<RootStackParamList>;
+const Stack = createNativeStackNavigator<RootStackParamList>();
+const Tab = createBottomTabNavigator<RootTabParamList>();
+export type TabNavigation = NavigationProp<RootTabParamList>;
+export type StackNavigation = NavigationProp<RootStackParamList>;
 
 function TabNavigator() {
     return (
@@ -54,6 +56,7 @@ export default function App() {
         <Stack.Navigator>
             <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
             <Stack.Screen name="Main" component={TabNavigator} options={{ headerShown: false }} />
+            <Stack.Screen name="CardSet" component={CardSetScreen} options={{ headerShown: false }} />
         </Stack.Navigator>
     )
 }

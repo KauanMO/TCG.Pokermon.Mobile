@@ -2,13 +2,13 @@ import { CardSetInfo } from "@/app/types/CardSetType";
 import { useNavigation } from "expo-router";
 import React from "react";
 import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
-import { TabNavigation } from "@/app";
+import { StackNavigation, TabNavigation } from "@/app";
 
 export default function CardSet({ set }: { set: CardSetInfo }) {
-    const navigation = useNavigation<TabNavigation>();
+    const stackNavigation = useNavigation<StackNavigation>();
 
     const openCardSet = () => {
-        navigation.navigate('CardSet', { id: set.id });
+        stackNavigation.navigate('CardSet', { id: set.id });
     }
 
     return (

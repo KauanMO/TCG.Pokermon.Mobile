@@ -19,6 +19,7 @@ export default function ShopScreen() {
 
     return <View>
         <Text>Figurinhas</Text>
+        
         <CardSetDisplay sets={cardSets} />
     </View>
 }

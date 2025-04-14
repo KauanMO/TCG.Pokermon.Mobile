@@ -1,3 +1,5 @@
+import { CardInfo } from "./CardType"
+
 export type CardSetInfo = {
     id: number,
     externalId: string,
@@ -9,4 +11,10 @@ export type CardSetInfo = {
     firstCardImage: string,
     secondCardImage: string,
     thirdCardImage: string
+}
+
+export type CardSetCards = {
+    cardSet: CardSetInfo,
+    cards: CardInfo[],
+    totalCount: number
 }
