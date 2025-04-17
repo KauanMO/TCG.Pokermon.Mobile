@@ -1,8 +1,9 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { CardSetCards, CardSetInfo } from "../types/CardSetType";
 import config from "./config";
 import Mock from "./mock";
 import GlobalVariables from "../utils/GlobalVariables";
+import Storage from "@/services/storage";
 
 const baseUrl: string = `${config.baseUrl}/cardsets`;
 
@@ -18,11 +19,20 @@ const getCardSets = async (): Promise<CardSetInfo[]> => {
 
 const getCardSetById = async (id: number, page: number): Promise<CardSetCards> => {
     try {
-        const response = await axios.get(`${baseUrl}/${id}?page=${page}&pageSize=${GlobalVariables.cardsDisplayCount}`);
-
+        console.log(id);
+        
+        const response = await axios.get(`${baseUrl}/${id}?page=${page}&pageSize=${GlobalVariables.cardsDisplayCount}`, {
+            headers: {
+                'Authorization': `Bearer ${await Storage.getToken()}`
+            }
+        });
+        console.log(response);
+        
         return response.data;
     } catch (e) {
-        return Mock.cardSetCardsMock[page -1];
+        const error = e as AxiosError;
+
+        return Mock.cardSetCardsMock[page - 1];
     }
 }
 

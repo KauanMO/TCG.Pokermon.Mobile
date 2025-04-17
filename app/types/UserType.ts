@@ -1,3 +1,8 @@
+export type UserCredencials = {
+    email: string | null,
+    password: string | null
+}
+
 export type LoginRequest = {
     email: string,
     password: string
@@ -6,7 +11,8 @@ export type LoginRequest = {
 export type LoginResponse = {
     id: number,
     username: string,
-    email: string
+    email: string,
+    token: string
 }
 
 export type UserInfo = {

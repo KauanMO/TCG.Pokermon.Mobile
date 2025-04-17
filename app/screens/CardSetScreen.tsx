@@ -5,15 +5,21 @@ import { CardSetCards } from "../types/CardSetType";
 import CardSets from "../api/cardsets";
 import GlobalVariables from "../utils/GlobalVariables";
 import CardDisplay from "../components/Card/CardDisplay";
+import { RouteProp, useRoute } from "@react-navigation/native";
+import { RootStackParamList } from "../types/ParamList";
 
-export default function CardSetScreen({ id }: { id: number }) {
+export default function CardSetScreen() {
     const [cardSetInfo, setCardSetInfo] = useState<CardSetCards>();
     const [cardsPage, setCardsPage] = useState(1);
     const [cardsTotalPages, setCardsTotalPages] = useState(0);
 
+    const route = useRoute<RouteProp<RootStackParamList, 'CardSet'>>();
+
+    const { id } = route.params ?? {};
+
     useEffect(() => {
         const requestCardSetById = async () => {
-            const response = await CardSets.getCardSetById(id, cardsPage);
+            const response = await CardSets.getCardSetById(id as number, cardsPage);
 
             setCardSetInfo(response);
             setCardsTotalPages(Math.ceil(response.totalCount / GlobalVariables.cardsDisplayCount));
