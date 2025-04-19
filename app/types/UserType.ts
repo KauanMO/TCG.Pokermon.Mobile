@@ -3,6 +3,15 @@ export type UserCredencials = {
     password: string | null
 }
 
+export type UserInfo = {
+    id?: number,
+    username: string,
+    createdDate: string,
+    balance: number,
+    cardAmount: number,
+    deckAmount: number
+}
+
 export type LoginRequest = {
     email: string,
     password: string
@@ -15,11 +24,8 @@ export type LoginResponse = {
     token: string
 }
 
-export type UserInfo = {
-    id?: number,
+export type RegisterRequest = {
     username: string,
-    createdDate: string,
-    balance: number,
-    cardAmount: number,
-    deckAmount: number
+    email: string,
+    password: string
 }

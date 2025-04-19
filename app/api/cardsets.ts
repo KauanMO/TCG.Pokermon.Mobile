@@ -19,19 +19,14 @@ const getCardSets = async (): Promise<CardSetInfo[]> => {
 
 const getCardSetById = async (id: number, page: number): Promise<CardSetCards> => {
     try {
-        console.log(id);
-        
         const response = await axios.get(`${baseUrl}/${id}?page=${page}&pageSize=${GlobalVariables.cardsDisplayCount}`, {
             headers: {
                 'Authorization': `Bearer ${await Storage.getToken()}`
             }
         });
-        console.log(response);
-        
+
         return response.data;
     } catch (e) {
-        const error = e as AxiosError;
-
         return Mock.cardSetCardsMock[page - 1];
     }
 }

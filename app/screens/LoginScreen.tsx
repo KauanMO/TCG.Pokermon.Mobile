@@ -15,7 +15,7 @@ export default function LoginScreen() {
 
             if (token != null) {
                 try {
-                    Auth.checkToken();
+                    await Auth.checkToken();
                     navigation.navigate('Main' as never);
                 } catch (e) {
                     const userCredentials = await Storage.getCredentials();
@@ -29,7 +29,7 @@ export default function LoginScreen() {
             }
         };
 
-        checkUser();
+        // checkUser();
     }, [])
 
 
@@ -47,9 +47,11 @@ export default function LoginScreen() {
     const sendLogin = async () => {
         setLoading(true);
 
-        const response: LoginResponse | null = await Users.login(formData);
-
-        navigation.navigate('Main' as never);
+        if (await Users.login(formData)) {
+            navigation.navigate('Main' as never);
+        } else {
+            console.error('Error at user login');
+        }
 
         setLoading(false);
     }
@@ -74,6 +76,11 @@ export default function LoginScreen() {
             borderRadius: 5,
             marginBottom: 10,
             paddingHorizontal: 10
+        },
+        form_buttons_container: {
+            display: 'flex',
+            flexDirection: 'row',
+            gap: 16
         }
     })
 
@@ -83,7 +90,7 @@ export default function LoginScreen() {
 
             <TextInput
                 style={styles.form_input}
-                placeholder='Digite seu email'
+                placeholder='Email'
                 value={formData.email}
                 onChangeText={(text) => setState("email", text)}
                 keyboardType="email-address"
@@ -92,13 +99,16 @@ export default function LoginScreen() {
 
             <TextInput
                 style={styles.form_input}
-                placeholder='Digite sua senha'
+                placeholder='********'
                 value={formData.password}
                 onChangeText={(text) => setState("password", text)}
                 secureTextEntry
             />
 
-            <Button title={loading ? 'Entrando...' : 'Entrar'} onPress={sendLogin} disabled={loading} />
+            <View style={styles.form_buttons_container}>
+                <Button title={'Cadastrar'} onPress={() => navigation.navigate('Register' as never)} />
+                <Button title={loading ? 'Entrando...' : 'Entrar'} onPress={sendLogin} disabled={loading} />
+            </View>
         </View>
     )
 }

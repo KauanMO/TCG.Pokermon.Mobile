@@ -7,5 +7,6 @@ export type RootTabParamList = {
 export type RootStackParamList = {
     CardSet: { id: number } | undefined,
     Login: undefined,
-    Main: undefined
+    Main: undefined,
+    Register: undefined
 }
