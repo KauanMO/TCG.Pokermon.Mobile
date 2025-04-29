@@ -8,14 +8,9 @@ const baseUrl: string = `${Config.baseUrl}/users`;
 
 const register = async (data: RegisterRequest): Promise<LoginResponse | null> => {
     try {
-        console.log(data);
-        
-        const response = await axios.post<LoginResponse>(`${baseUrl}`, {
+        await axios.post<LoginResponse>(`${baseUrl}`, {
             data
         });
-
-        console.log(response);
-        
 
         return await login({ email: data.email, password: data.password });
     } catch (e) {
@@ -29,6 +24,8 @@ const register = async (data: RegisterRequest): Promise<LoginResponse | null> =>
 
 const login = async (data: LoginRequest): Promise<LoginResponse | null> => {
     try {
+        console.log(data);
+        
         const response = await axios.post<LoginResponse>(`${baseUrl}/login`,
             data
         );
@@ -40,7 +37,8 @@ const login = async (data: LoginRequest): Promise<LoginResponse | null> => {
     } catch (e) {
         const error = e as AxiosError;
 
-        // console.log(error.response);
+        console.log(error.response);
+        
 
         Storage.clearCredentials();
         Storage.clearToken();

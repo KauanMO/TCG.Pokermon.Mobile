@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Image, StyleSheet, Text, Touchable, TouchableOpacity, View } from "react-native";
+import { Button, Image, StyleSheet, Text, TextInput, Touchable, TouchableOpacity, View } from "react-native";
 import GoBackIcon from "../components/Icons/GoBackIcon";
 import { CardSetCards } from "../types/CardSetType";
 import CardSets from "../api/cardsets";
@@ -7,11 +7,14 @@ import GlobalVariables from "../utils/GlobalVariables";
 import CardDisplay from "../components/Card/CardDisplay";
 import { RouteProp, useRoute } from "@react-navigation/native";
 import { RootStackParamList } from "../types/ParamList";
+import Cards from "../api/cards";
+import { CardInfo } from "../types/CardType";
 
 export default function CardSetScreen() {
     const [cardSetInfo, setCardSetInfo] = useState<CardSetCards>();
-    const [cardsPage, setCardsPage] = useState(1);
+    const [cardsPage, setCardsPage] = useState(0);
     const [cardsTotalPages, setCardsTotalPages] = useState(0);
+    const [buyAmount, setBuyAmount] = useState<any>(1);
 
     const route = useRoute<RouteProp<RootStackParamList, 'CardSet'>>();
 
@@ -51,15 +54,26 @@ export default function CardSetScreen() {
         },
         pageControllerText: {
             fontSize: 20
+        },
+        buyButton: {
+            flex: 1,
+            justifyContent: 'flex-end',
+            bottom: 16
         }
     });
 
     const nextPage = () => {
-        if (cardsPage + 1 <= cardsTotalPages) setCardsPage(cardsPage + 1);
+        if (cardsPage + 1 < cardsTotalPages) setCardsPage(cardsPage + 1);
     }
 
     const backPage = () => {
-        if (cardsPage - 1 > 0) setCardsPage(cardsPage - 1);
+        if (cardsPage - 1 >= 0) setCardsPage(cardsPage - 1);
+    }
+
+    const sendBuyRequest = async (): Promise<void> => {
+        const cards: CardInfo[] = await Cards.openCardSet(id as number, buyAmount);
+
+        console.log(cards);
     }
 
     return <View style={styles.container}>
@@ -80,10 +94,20 @@ export default function CardSetScreen() {
             <TouchableOpacity onPress={backPage}>
                 <Text style={styles.pageControllerText}>{'<'}</Text>
             </TouchableOpacity>
-            <Text style={styles.pageControllerText}>Página {cardsPage}/{cardsTotalPages}</Text>
+            <Text style={styles.pageControllerText}>Página {cardsPage + 1}/{cardsTotalPages}</Text>
             <TouchableOpacity onPress={nextPage}>
                 <Text style={styles.pageControllerText}>{'>'}</Text>
             </TouchableOpacity>
+        </View>
+
+        <View style={styles.buyButton}>
+            <TextInput
+                keyboardType="numeric"
+                placeholder="Quantidade"
+                onChangeText={amount => setBuyAmount(Number(amount))}
+            />
+
+            <Button title="Comprar" onPress={sendBuyRequest} />
         </View>
     </View>
 }
