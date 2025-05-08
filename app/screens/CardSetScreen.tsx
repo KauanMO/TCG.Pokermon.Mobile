@@ -7,14 +7,14 @@ import GlobalVariables from "../utils/GlobalVariables";
 import CardDisplay from "../components/Card/CardDisplay";
 import { RouteProp, useRoute } from "@react-navigation/native";
 import { RootStackParamList } from "../types/ParamList";
-import Cards from "../api/cards";
-import { CardInfo } from "../types/CardType";
+import OpenCardSet from "../components/CardSet/OpenCardSet";
 
 export default function CardSetScreen() {
     const [cardSetInfo, setCardSetInfo] = useState<CardSetCards>();
     const [cardsPage, setCardsPage] = useState(0);
     const [cardsTotalPages, setCardsTotalPages] = useState(0);
-    const [buyAmount, setBuyAmount] = useState<any>(1);
+    
+
 
     const route = useRoute<RouteProp<RootStackParamList, 'CardSet'>>();
 
@@ -54,11 +54,6 @@ export default function CardSetScreen() {
         },
         pageControllerText: {
             fontSize: 20
-        },
-        buyButton: {
-            flex: 1,
-            justifyContent: 'flex-end',
-            bottom: 16
         }
     });
 
@@ -68,12 +63,6 @@ export default function CardSetScreen() {
 
     const backPage = () => {
         if (cardsPage - 1 >= 0) setCardsPage(cardsPage - 1);
-    }
-
-    const sendBuyRequest = async (): Promise<void> => {
-        const cards: CardInfo[] = await Cards.openCardSet(id as number, buyAmount);
-
-        console.log(cards);
     }
 
     return <View style={styles.container}>
@@ -100,14 +89,6 @@ export default function CardSetScreen() {
             </TouchableOpacity>
         </View>
 
-        <View style={styles.buyButton}>
-            <TextInput
-                keyboardType="numeric"
-                placeholder="Quantidade"
-                onChangeText={amount => setBuyAmount(Number(amount))}
-            />
-
-            <Button title="Comprar" onPress={sendBuyRequest} />
-        </View>
+        <OpenCardSet cardSetId={id as number} />
     </View>
 }

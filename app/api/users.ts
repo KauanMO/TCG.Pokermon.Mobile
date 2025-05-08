@@ -3,6 +3,7 @@ import Config from './config';
 import Mock from './mock';
 import axios, { AxiosError } from 'axios';
 import Storage from '@/services/storage';
+import Toast from 'react-native-toast-message';
 
 const baseUrl: string = `${Config.baseUrl}/users`;
 
@@ -38,7 +39,11 @@ const login = async (data: LoginRequest): Promise<LoginResponse | null> => {
         const error = e as AxiosError;
 
         console.log(error.response);
-        
+        Toast.show({
+            type: 'error',
+            text1: 'Erro ao fazer login',
+            text2: error.cause?.message as string
+        })
 
         Storage.clearCredentials();
         Storage.clearToken();

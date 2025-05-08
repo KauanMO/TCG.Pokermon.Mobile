@@ -1,15 +1,15 @@
 import { CardInfo } from "@/app/types/CardType";
 import React, { useState, useRef } from "react";
 import { StyleSheet } from "react-native";
-import { Animated, Image, PanResponder, Pressable, Text, TouchableOpacity, View } from "react-native";
+import { Animated, Image, PanResponder, Pressable, Text, View } from "react-native";
 import StringHelper from "@/app/utils/StringHelper";
 import HoloEffect from "./HoloEffect";
 
 type Props = {
     card: CardInfo;
     large: boolean;
-    width: number;
-    height: number;
+    width: number | null;
+    height: number | null;
     borderRadius: number;
     holo: boolean;
     onExpand?: () => void;

@@ -8,6 +8,7 @@ import Auth from "../api/auth";
 
 export default function LoginScreen() {
     const navigation = useNavigation();
+    const [error, setError] = useState<any>();
 
     useEffect(() => {
         const checkUser = async () => {
