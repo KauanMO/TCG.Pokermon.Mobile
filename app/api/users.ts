@@ -9,15 +9,17 @@ const baseUrl: string = `${Config.baseUrl}/users`;
 
 const register = async (data: RegisterRequest): Promise<LoginResponse | null> => {
     try {
-        await axios.post<LoginResponse>(`${baseUrl}`, {
-            data
-        });
+        await axios.post<LoginResponse>(`${baseUrl}`, data);
 
         return await login({ email: data.email, password: data.password });
     } catch (e) {
         const error = e as AxiosError;
 
-        console.log(error.response);
+        Toast.show({
+            type: 'error',
+            text1: 'Erro ao se cadastrar',
+            text2: error.response?.data as string
+        });
 
         return null;
     }
@@ -25,8 +27,6 @@ const register = async (data: RegisterRequest): Promise<LoginResponse | null> =>
 
 const login = async (data: LoginRequest): Promise<LoginResponse | null> => {
     try {
-        console.log(data);
-        
         const response = await axios.post<LoginResponse>(`${baseUrl}/login`,
             data
         );
@@ -38,12 +38,13 @@ const login = async (data: LoginRequest): Promise<LoginResponse | null> => {
     } catch (e) {
         const error = e as AxiosError;
 
-        console.log(error.response);
+        console.error(error.response);
+
         Toast.show({
             type: 'error',
             text1: 'Erro ao fazer login',
-            text2: error.cause?.message as string
-        })
+            text2: error.response?.data as string
+        });
 
         Storage.clearCredentials();
         Storage.clearToken();

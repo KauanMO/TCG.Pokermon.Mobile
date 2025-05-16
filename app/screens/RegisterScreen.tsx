@@ -49,8 +49,6 @@ export default function RegisterScreen() {
 
         if (await Users.register(formData)) {
             navigation.navigate('Main' as never);
-        } else {
-            console.error('Error at user register');
         }
 
         setLoading(false);
