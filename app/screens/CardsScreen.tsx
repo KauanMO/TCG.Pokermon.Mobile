@@ -1,5 +1,5 @@
-import React, { ReactElement, useEffect, useState } from "react";
-import { Button, Pressable, StyleSheet, Text, View } from "react-native";
+import React, { useEffect, useState } from "react";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 import CardDisplay from "../components/Card/CardDisplay";
 import { CardInfo } from "../types/CardType";
 import Cards from "../api/cards";
@@ -70,32 +70,46 @@ export default function CardsScreen() {
     }
 
     const styles = StyleSheet.create({
+        filters_container: {
+            display: 'flex',
+            flexDirection: 'row',
+            gap: 16,
+            margin: 8
+        },
         filter_container: {
             display: 'flex',
             flexDirection: 'row',
             gap: 10,
             fontSize: 16,
             alignContent: 'center',
-            height: 30
+            height: 50,
+            borderWidth: 1,
+            borderRadius: 8,
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: 100,
+            backgroundColor: '#292d3e'
         },
         filter_text: {
-            fontSize: 20
+            color: '#bfc7d5'
         }
     });
 
     return <View>
-        <Text>Minhas cartas</Text>
+        <View style={styles.filters_container}>
+            {
+                filters.map((filter, index) => {
+                    return <Pressable style={styles.filter_container} key={filter.name} onPress={() => handleFilterClick(index)}>
+                        <Text style={styles.filter_text}>{filter.name}</Text>
+                        <Icon color={'#bfc7d5'} size={16} name={filter.asc ? 'up' : 'down'} />
+                    </Pressable>
+                })
+            }
 
-        {
-            filters.map((filter, index) => {
-                return <Pressable style={styles.filter_container} key={filter.name} onPress={() => handleFilterClick(index)}>
-                    <Text style={styles.filter_text}>{filter.name}</Text>
-                    <Icon name={filter.asc ? 'up' : 'down'} />
-                </Pressable>
-            })
-        }
-
-        <DropDown.CardTypesDropDownPicker onChangeItems={handleCardTypesFilter} />
+            <View>
+                <DropDown.CardTypesDropDownPicker onChangeItems={handleCardTypesFilter} />
+            </View>
+        </View>
 
         <CardDisplay cards={cardsToDisplay} internal={true} marginTop={10} />
     </View>
