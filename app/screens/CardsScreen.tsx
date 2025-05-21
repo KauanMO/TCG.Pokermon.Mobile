@@ -74,7 +74,9 @@ export default function CardsScreen() {
             display: 'flex',
             flexDirection: 'row',
             gap: 16,
-            margin: 8
+            margin: 8,
+            alignContent: 'center',
+            justifyContent: 'center'
         },
         filter_container: {
             display: 'flex',
