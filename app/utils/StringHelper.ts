@@ -1,8 +1,9 @@
 function getFormattedCurrency(value: number): string {
-    return "P" + value.toLocaleString('en-US', {
-        style: 'currency',
-        currency: 'USD'
-    });
+    return value.toLocaleString('en-US', {
+        style: 'decimal',
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    }).slice(0);
 }
 
 export default {

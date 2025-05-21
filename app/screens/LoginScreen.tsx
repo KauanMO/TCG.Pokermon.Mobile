@@ -11,6 +11,8 @@ export default function LoginScreen() {
     const [error, setError] = useState<any>();
 
     useEffect(() => {
+        return navigation.navigate('Main' as never);
+
         const checkUser = async () => {
             const token = await Storage.getToken();
 

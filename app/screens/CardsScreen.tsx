@@ -83,7 +83,6 @@ export default function CardsScreen() {
             flexDirection: 'row',
             gap: 10,
             fontSize: 16,
-            alignContent: 'center',
             height: 50,
             borderWidth: 1,
             borderRadius: 8,

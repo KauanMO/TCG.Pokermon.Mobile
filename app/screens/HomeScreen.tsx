@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import { UserInfo } from "../types/UserType";
 import { StyleSheet, Text, View } from "react-native";
 import Users from "../api/users";
-import storage from "@/services/storage";
 import StringHelper from "../utils/StringHelper";
+import Pokedollar from "../components/Currency/Pokedollar";
 
 export default function HomeScreen() {
     const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
@@ -29,7 +29,13 @@ export default function HomeScreen() {
         <Text style={styles.hello}>Ola, {userInfo?.username}!</Text>
         {
             userInfo?.balance != undefined &&
-            <Text>{StringHelper.getFormattedCurrency(userInfo.balance)}</Text>
+            <Pokedollar
+                position={"absolute"}
+                value={userInfo.balance}
+                coinSize={30}
+                top={10}
+                right={10}
+            />
         }
     </View>
 }
