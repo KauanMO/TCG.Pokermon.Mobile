@@ -4,6 +4,7 @@ import { StyleSheet, Text, View } from "react-native";
 import Users from "../api/users";
 import StringHelper from "../utils/StringHelper";
 import Pokedollar from "../components/Currency/Pokedollar";
+import FavoritePokemonIcon from "../components/Icons/FavoritePokemonIcon";
 
 export default function HomeScreen() {
     const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
@@ -26,7 +27,13 @@ export default function HomeScreen() {
     });
 
     return <View>
-        <Text style={styles.hello}>Ola, {userInfo?.username}!</Text>
+        <FavoritePokemonIcon
+            favoritePokemonCode={userInfo?.favoritePokemonCode ?? 0}
+            position="absolute"
+            top={6}
+            left={16}
+        />
+
         {
             userInfo?.balance != undefined &&
             <Pokedollar

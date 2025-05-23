@@ -9,7 +9,8 @@ export type UserInfo = {
     createdDate: string,
     balance: number,
     cardAmount: number,
-    deckAmount: number
+    deckAmount: number,
+    favoritePokemonCode: number
 }
 
 export type LoginRequest = {
