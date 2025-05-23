@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Image, StyleSheet } from "react-native";
 import DropDownPicker, { ItemType } from 'react-native-dropdown-picker';
+const pokemon = require('pokemon');
 
 const CardTypesDropDownPicker = ({ onChangeItems }: { onChangeItems: (values: string[] | null) => void }) => {
     const styles = StyleSheet.create({
@@ -68,6 +69,37 @@ const CardTypesDropDownPicker = ({ onChangeItems }: { onChangeItems: (values: st
     />
 }
 
+const FavoritePokemonDropDownPicker = ({ setPokemonCode }: { setPokemonCode: Function }) => {
+    const [open, setOpen] = useState<boolean>(false);
+    const [value, setValue] = useState(null);
+
+    const styles = StyleSheet.create({
+        icon: {
+            width: 40,
+            height: 40
+        }
+    });
+
+    const [items, setItems] = useState<ItemType<string>[]>(pokemon
+        .all()
+        .map((p: ItemType<string>) => ({ value: p, label: p, icon: () => <Image style={styles.icon} source={{ uri: `https://raw.githubusercontent.com/PokeAPI/sprites/refs/heads/master/sprites/pokemon/${pokemon.getId(p)}.png` }} /> })));
+
+    return <DropDownPicker
+        setValue={setValue}
+        setOpen={setOpen}
+        setItems={setItems}
+        open={open}
+        items={items}
+        multiple={false}
+        value={value}
+        searchable={true}
+        placeholder="Escolha um pokemon"
+        searchPlaceholder="Pesquise por seu nome"
+        onChangeValue={(e) => setPokemonCode(pokemon.getId(e))}
+    />
+}
+
 export default {
-    CardTypesDropDownPicker
+    CardTypesDropDownPicker,
+    FavoritePokemonDropDownPicker
 }

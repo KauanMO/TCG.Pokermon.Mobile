@@ -11,6 +11,7 @@ import CardSetScreen from "./screens/CardSetScreen";
 import RegisterScreen from "./screens/RegisterScreen";
 import Toast from 'react-native-toast-message';
 import React from "react";
+import FavoritePokemonChooseScreen from "./screens/FavoritePokemonChooseScreen";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator<RootTabParamList>();
@@ -53,6 +54,7 @@ export default function App() {
     return <>
         <Stack.Navigator>
             <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
+            <Stack.Screen name="FavoritePokemonChoose" component={FavoritePokemonChooseScreen} options={{ headerShown: false }} />
             <Stack.Screen name="Main" component={TabNavigator} options={{ headerShown: false }} />
             <Stack.Screen name="CardSet" component={CardSetScreen} options={{ headerShown: false }} />
             <Stack.Screen name="Register" component={RegisterScreen} options={{ headerShown: false }} />

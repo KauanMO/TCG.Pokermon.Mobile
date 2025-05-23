@@ -8,5 +8,6 @@ export type RootStackParamList = {
     CardSet: { id: number } | undefined,
     Login: undefined,
     Main: undefined,
-    Register: undefined
+    Register: undefined,
+    FavoritePokemonChoose: undefined
 }

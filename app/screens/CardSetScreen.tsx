@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Image, StyleSheet, Text, TextInput, Touchable, TouchableOpacity, View } from "react-native";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import GoBackIcon from "../components/Icons/GoBackIcon";
 import { CardSetCards } from "../types/CardSetType";
 import CardSets from "../api/cardsets";
@@ -14,8 +14,6 @@ export default function CardSetScreen() {
     const [cardsPage, setCardsPage] = useState(0);
     const [cardsTotalPages, setCardsTotalPages] = useState(0);
     
-
-
     const route = useRoute<RouteProp<RootStackParamList, 'CardSet'>>();
 
     const { id } = route.params ?? {};

@@ -69,8 +69,21 @@ const getUserInfo = async (): Promise<UserInfo | null> => {
     }
 }
 
+const updateFavoritePokemonCode = async (pokemonCode: number): Promise<void> => {
+    try {
+        await axios.patch(`${baseUrl}/favorite-pokemon-code?pokemonCode=${pokemonCode}`, {}, {
+            headers: {
+                'Authorization': `Bearer ${await Storage.getToken()}`
+            }
+        });
+    } catch (e) {
+        const error = e as AxiosError;
+    }
+}
+
 export default {
     register,
     login,
-    getUserInfo
+    getUserInfo,
+    updateFavoritePokemonCode
 }

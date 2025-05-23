@@ -48,7 +48,7 @@ export default function RegisterScreen() {
         setLoading(true);
 
         if (await Users.register(formData)) {
-            navigation.navigate('Main' as never);
+            navigation.navigate('FavoritePokemonChoose' as never);
         }
 
         setLoading(false);
