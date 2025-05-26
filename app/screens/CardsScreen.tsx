@@ -12,7 +12,7 @@ export default function CardsScreen() {
     const [cardsToDisplay, setCardsToDisplay] = useState<CardInfo[]>([]);
     const [filtersApplied, setFiltersApplied] = useState<CardsFiltersApplied | null>(null);
     const [page, setPage] = useState<number>(0);
-    const [totalPageCount, setTotalPageCount] = useState<number>(4);
+    const [totalPageCount, setTotalPageCount] = useState<number>(0);
 
     useEffect(() => {
         const requestMyCards = async (): Promise<void> => {

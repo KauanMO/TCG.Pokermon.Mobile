@@ -107,6 +107,8 @@ const CardsOrderDropDownPicker = ({ onChangeValue }: { onChangeValue: Function }
         { label: 'Nome  ∨', value: 'shopCard.name desc' },
         { label: 'Preço  ∧', value: 'price asc' },
         { label: 'Preço  ∨', value: 'price desc' },
+        { label: 'Data de aquisição  ∧', value: 'createdDate asc' },
+        { label: 'Data de aquisição  ∨', value: 'createdDate desc' },
     ]);
 
     const styles = StyleSheet.create({
