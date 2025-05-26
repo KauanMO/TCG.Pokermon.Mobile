@@ -14,7 +14,7 @@ export default function CardSetScreen() {
     const [cardSetInfo, setCardSetInfo] = useState<CardSetCards>();
     const [cardsPage, setCardsPage] = useState(0);
     const [cardsTotalPages, setCardsTotalPages] = useState(0);
-    
+
     const route = useRoute<RouteProp<RootStackParamList, 'CardSet'>>();
 
     const { id } = route.params ?? {};
@@ -41,7 +41,8 @@ export default function CardSetScreen() {
             height: 50,
             position: 'absolute',
             top: 10,
-            left: 100
+            left: 100,
+            flex: 1
         }
     });
 
@@ -51,6 +52,7 @@ export default function CardSetScreen() {
         <Image
             src={cardSetInfo?.cardSet.logo}
             style={styles.cardSetLogo}
+            resizeMode="contain"
         />
 
         <CardDisplay
