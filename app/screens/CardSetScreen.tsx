@@ -10,7 +10,7 @@ import { RootStackParamList } from "../types/ParamList";
 import OpenCardSet from "../components/CardSet/OpenCardSet";
 import PageController from "../components/PageController/PageController";
 import Pokedollar from "../components/Currency/Pokedollar";
-import StringHelper from "../utils/StringHelper";
+import Modal from 'react-native-modal';
 
 export default function CardSetScreen() {
     const [cardSetInfo, setCardSetInfo] = useState<CardSetCards>();
@@ -50,13 +50,11 @@ export default function CardSetScreen() {
 
     return <View style={styles.container}>
         <GoBackIcon />
-
         <Image
             src={cardSetInfo?.cardSet.logo}
             style={styles.cardSetLogo}
             resizeMode="contain"
         />
-
         <Pokedollar
             value={cardSetInfo?.cardSet.price ?? 0}
             coinSize={24}
@@ -64,6 +62,7 @@ export default function CardSetScreen() {
             right={16}
             top={16}
         />
+        
 
         <CardDisplay
             cards={cardSetInfo?.cards}
@@ -73,6 +72,6 @@ export default function CardSetScreen() {
 
         <PageController page={cardsPage} setCardsPage={setCardsPage} totalPage={cardsTotalPages} />
 
-        <OpenCardSet cardSetId={id as number} />
+        <OpenCardSet price={cardSetInfo?.cardSet.price ?? 0} cardSetId={id as number} />
     </View>
 }
