@@ -9,6 +9,8 @@ import { RouteProp, useRoute } from "@react-navigation/native";
 import { RootStackParamList } from "../types/ParamList";
 import OpenCardSet from "../components/CardSet/OpenCardSet";
 import PageController from "../components/PageController/PageController";
+import Pokedollar from "../components/Currency/Pokedollar";
+import StringHelper from "../utils/StringHelper";
 
 export default function CardSetScreen() {
     const [cardSetInfo, setCardSetInfo] = useState<CardSetCards>();
@@ -53,6 +55,14 @@ export default function CardSetScreen() {
             src={cardSetInfo?.cardSet.logo}
             style={styles.cardSetLogo}
             resizeMode="contain"
+        />
+
+        <Pokedollar
+            value={cardSetInfo?.cardSet.price ?? 0}
+            coinSize={24}
+            position="absolute"
+            right={16}
+            top={16}
         />
 
         <CardDisplay
