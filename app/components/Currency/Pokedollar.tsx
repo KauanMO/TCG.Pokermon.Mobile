@@ -5,6 +5,8 @@ import StringHelper from "@/app/utils/StringHelper";
 export type Props = {
     value: number,
     coinSize: number,
+    textColor?: string,
+    textSize?: number,
     top?: number | null,
     right?: number | null,
     position?: "static" | "relative" | "absolute" | "fixed" | "sticky" | undefined,
@@ -21,14 +23,18 @@ export default function Pokedollar(props: Props) {
             top: props.top ?? null,
             right: props.right ?? null
         },
+        value_text: {
+            color: props.textColor ?? 'black',
+            fontSize: props.textSize ?? 16
+        },
         coin: {
             width: props.coinSize,
-            height: props.coinSize
+            height: props.coinSize,
         }
     })
 
     return <View style={styles.container}>
         <Image style={styles.coin} source={require('@/assets/icons/coin.png')} />
-        <Text>{StringHelper.getFormattedCurrency(props.value)}</Text>
+        <Text style={styles.value_text}>{StringHelper.getFormattedCurrency(props.value)}</Text>
     </View>
 }

@@ -99,7 +99,41 @@ const FavoritePokemonDropDownPicker = ({ setPokemonCode }: { setPokemonCode: Fun
     />
 }
 
+const CardsOrderDropDownPicker = ({ onChangeValue }: { onChangeValue: Function }) => {
+    const [open, setOpen] = useState<boolean>(false);
+    const [value, setValue] = useState(null);
+    const [items, setItems] = useState<ItemType<string>[]>([
+        { label: 'Nome  ∧', value: 'shopCard.name asc' },
+        { label: 'Nome  ∨', value: 'shopCard.name desc' },
+        { label: 'Preço  ∧', value: 'price asc' },
+        { label: 'Preço  ∨', value: 'price desc' },
+    ]);
+
+    const styles = StyleSheet.create({
+        container: {
+            width: 120,
+            maxWidth: 120,
+            height: 50
+        }
+    });
+
+    return <DropDownPicker
+        setValue={setValue}
+        setOpen={setOpen}
+        setItems={setItems}
+        open={open}
+        items={items}
+        multiple={false}
+        value={value}
+        style={styles.container}
+        placeholder="Filtrar"
+        theme="DARK"
+        onChangeValue={(v) => onChangeValue(v)}
+    />
+}
+
 export default {
     CardTypesDropDownPicker,
-    FavoritePokemonDropDownPicker
+    FavoritePokemonDropDownPicker,
+    CardsOrderDropDownPicker
 }

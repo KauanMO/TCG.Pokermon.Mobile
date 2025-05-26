@@ -8,6 +8,7 @@ import CardDisplay from "../components/Card/CardDisplay";
 import { RouteProp, useRoute } from "@react-navigation/native";
 import { RootStackParamList } from "../types/ParamList";
 import OpenCardSet from "../components/CardSet/OpenCardSet";
+import PageController from "../components/PageController/PageController";
 
 export default function CardSetScreen() {
     const [cardSetInfo, setCardSetInfo] = useState<CardSetCards>();
@@ -23,7 +24,7 @@ export default function CardSetScreen() {
             const response = await CardSets.getCardSetById(id as number, cardsPage);
 
             setCardSetInfo(response);
-            setCardsTotalPages(Math.ceil(response.totalCount / GlobalVariables.cardsDisplayCount));
+            setCardsTotalPages(Math.ceil(response.totalCount / GlobalVariables.shopCardsDisplayCount));
         }
 
         requestCardSetById();
@@ -41,27 +42,8 @@ export default function CardSetScreen() {
             position: 'absolute',
             top: 10,
             left: 100
-        },
-        pageController: {
-            flexDirection: 'row',
-            gap: 6,
-            fontSize: 24,
-            width: '100%',
-            justifyContent: 'center',
-            marginTop: 20
-        },
-        pageControllerText: {
-            fontSize: 20
         }
     });
-
-    const nextPage = () => {
-        if (cardsPage + 1 < cardsTotalPages) setCardsPage(cardsPage + 1);
-    }
-
-    const backPage = () => {
-        if (cardsPage - 1 >= 0) setCardsPage(cardsPage - 1);
-    }
 
     return <View style={styles.container}>
         <GoBackIcon />
@@ -77,15 +59,7 @@ export default function CardSetScreen() {
             marginTop={70}
         />
 
-        <View style={styles.pageController}>
-            <TouchableOpacity onPress={backPage}>
-                <Text style={styles.pageControllerText}>{'<'}</Text>
-            </TouchableOpacity>
-            <Text style={styles.pageControllerText}>Página {cardsPage + 1}/{cardsTotalPages}</Text>
-            <TouchableOpacity onPress={nextPage}>
-                <Text style={styles.pageControllerText}>{'>'}</Text>
-            </TouchableOpacity>
-        </View>
+        <PageController page={cardsPage} setCardsPage={setCardsPage} totalPage={cardsTotalPages} />
 
         <OpenCardSet cardSetId={id as number} />
     </View>

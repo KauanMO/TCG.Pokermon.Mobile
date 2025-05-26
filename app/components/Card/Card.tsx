@@ -4,27 +4,28 @@ import { StyleSheet } from "react-native";
 import { Animated, Image, PanResponder, Pressable, Text, View } from "react-native";
 import StringHelper from "@/app/utils/StringHelper";
 import HoloEffect from "./HoloEffect";
+import Pokedollar from "../Currency/Pokedollar";
 
 type Props = {
     card: CardInfo;
-    large: boolean;
     width: number | null;
     height: number | null;
     borderRadius: number;
     holo: boolean;
     onExpand?: () => void;
     info: boolean;
+    internal?: boolean
 };
 
 export default function Card({
     card,
-    large,
     width,
     height,
     borderRadius,
     holo,
     onExpand,
-    info
+    info,
+    internal
 }: Props) {
     const rotateX = useRef(new Animated.Value(0)).current;
     const rotateY = useRef(new Animated.Value(0)).current;
@@ -79,19 +80,37 @@ export default function Card({
     };
 
     const styles = StyleSheet.create({
-        cardInfoName: {
+        container: {
+            width,
+            height,
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center'
+        },
+        card_info_name: {
             fontSize: 24,
             color: 'white',
             fontWeight: 500
         },
-        cardInfoText: {
+        card_info_text_container: {
+            display: 'flex',
+            alignItems: 'center'
+        },
+        card_info_text: {
             fontSize: 20,
             color: 'white'
-        }
+        },
     });
 
     return (
-        <Pressable onPress={onExpand} style={{ width, height }}>
+        <Pressable onPress={onExpand} style={styles.container}>
+            {
+                info && (
+                    <View>
+                        <Text style={styles.card_info_name}>{card.name}</Text>
+                    </View>
+                )
+            }
             <Animated.View
                 {...panResponder.panHandlers}
                 style={[
@@ -107,18 +126,11 @@ export default function Card({
                     animatedStyle,
                 ]}
             >
-                {
-                    info && (
-                        <View>
-                            <Text style={styles.cardInfoName}>{card.name}</Text>
-                        </View>
-                    )
-                }
                 <Image
                     src={info ? card.images.large : card.images.small}
                     style={{
-                        width: info ? 330 : 400,
-                        height: info ? 500 : 100,
+                        width: '100%',
+                        height: '100%',
                         borderRadius,
                     }}
                     resizeMode="contain"
@@ -126,20 +138,25 @@ export default function Card({
                 {
                     holo && !info && (
                         <HoloEffect
-                            width={info ? 330 : 400}
-                            height={info ? 500 : 100}
+                            width='100%'
+                            height='100%'
                         />
                     )
                 }
-                {
-                    info && (
-                        <View>
-                            <Text style={styles.cardInfoText}>Preço base: {StringHelper.getFormattedCurrency(card.price)}</Text>
-                            <Text style={styles.cardInfoText}>Raridade: {card.rarity}</Text>
-                        </View>
-                    )
-                }
             </Animated.View>
+            {
+                info && (
+                    <View style={styles.card_info_text_container}>
+                        {
+                            internal
+                                ? <Pokedollar value={card.price} coinSize={24} textColor="white" textSize={24} />
+                                : <Text style={styles.card_info_text}>Preço base: {StringHelper.getFormattedCurrency(card.price)}</Text>
+                        }
+
+                        <Text style={styles.card_info_text}>Raridade: {card.rarity}</Text>
+                    </View>
+                )
+            }
         </Pressable>
     );
 }

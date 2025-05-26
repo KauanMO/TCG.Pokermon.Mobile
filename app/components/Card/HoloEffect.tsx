@@ -2,13 +2,13 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Animated, Easing } from 'react-native';
 import React, { useEffect, useRef } from 'react';
 
-export default function HoloEffect({ width, height }: { width: number, height: number }) {
+export default function HoloEffect({ width, height }: { width: number | string, height: number | string }) {
     const translateX = useRef(new Animated.Value(-width)).current;
 
     useEffect(() => {
         Animated.loop(
             Animated.timing(translateX, {
-                toValue: width,
+                toValue: width as number,
                 duration: 2000,
                 easing: Easing.linear,
                 useNativeDriver: true,
@@ -21,8 +21,8 @@ export default function HoloEffect({ width, height }: { width: number, height: n
             pointerEvents="none"
             style={{
                 position: 'absolute',
-                width,
-                height,
+                width: width as number,
+                height: height as number,
                 transform: [{ translateX }],
                 opacity: 0.1,
             }}

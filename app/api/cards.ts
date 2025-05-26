@@ -2,12 +2,20 @@ import axios, { AxiosError } from "axios";
 import config from "./config";
 import { CardInfo } from "../types/CardType";
 import storage from "@/services/storage";
+import { CardsFiltersApplied } from "../types/Filters";
+import GlobalVariables from "../utils/GlobalVariables";
 
 const baseUrl: string = `${config.baseUrl}/cards`;
 
-const getMyCards = async (): Promise<CardInfo[]> => {
+const getMyCards = async (filters: CardsFiltersApplied | null, page: number): Promise<CardInfo[]> => {
     try {
-        const response = await axios.get(`${baseUrl}/my-cards`, {
+        let params: string = `?orderBy=${filters?.orderBy ?? 'createdDate'}&asc=${filters?.asc ?? 'false'}`
+
+        filters?.types?.forEach(type => {
+            params += `&cardTypes=${type}`
+        });
+
+        const response = await axios.get(`${baseUrl}/my-cards${params}&page=${page}&pageSize=${GlobalVariables.myCardsDisplayCount}`, {
             headers: {
                 Authorization: `Bearer ${await storage.getToken()}`
             }

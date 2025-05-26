@@ -19,7 +19,7 @@ const getCardSets = async (): Promise<CardSetInfo[]> => {
 
 const getCardSetById = async (id: number, page: number): Promise<CardSetCards> => {
     try {
-        const response = await axios.get(`${baseUrl}/${id}?page=${page}&pageSize=${GlobalVariables.cardsDisplayCount}`, {
+        const response = await axios.get(`${baseUrl}/${id}?page=${page}&pageSize=${GlobalVariables.shopCardsDisplayCount}`, {
             headers: {
                 'Authorization': `Bearer ${await Storage.getToken()}`
             }
