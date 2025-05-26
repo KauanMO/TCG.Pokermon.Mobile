@@ -1,13 +1,13 @@
 import axios, { AxiosError } from "axios";
 import config from "./config";
-import { CardInfo } from "../types/CardType";
+import { CardInfo, CardsInfoAndTotalCount } from "../types/CardType";
 import storage from "@/services/storage";
 import { CardsFiltersApplied } from "../types/Filters";
 import GlobalVariables from "../utils/GlobalVariables";
 
 const baseUrl: string = `${config.baseUrl}/cards`;
 
-const getMyCards = async (filters: CardsFiltersApplied | null, page: number): Promise<CardInfo[]> => {
+const getMyCards = async (filters: CardsFiltersApplied | null, page: number): Promise<CardsInfoAndTotalCount> => {
     try {
         let params: string = `?orderBy=${filters?.orderBy ?? 'createdDate'}&asc=${filters?.asc ?? 'false'}`
 
@@ -25,7 +25,10 @@ const getMyCards = async (filters: CardsFiltersApplied | null, page: number): Pr
     } catch (e) {
         const error = e as AxiosError;
 
-        return [];
+        return {
+            cards: [],
+            totalCards: 0
+        };
     }
 }
 

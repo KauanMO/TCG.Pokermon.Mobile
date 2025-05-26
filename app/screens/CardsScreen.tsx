@@ -1,24 +1,25 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import CardDisplay from "../components/Card/CardDisplay";
-import { CardInfo } from "../types/CardType";
+import { CardInfo, CardsInfoAndTotalCount } from "../types/CardType";
 import Cards from "../api/cards";
 import DropDown from "../components/DropDown";
 import { CardsFiltersApplied } from "../types/Filters";
 import PageController from "../components/PageController/PageController";
+import GlobalVariables from "../utils/GlobalVariables";
 
 export default function CardsScreen() {
     const [cardsToDisplay, setCardsToDisplay] = useState<CardInfo[]>([]);
     const [filtersApplied, setFiltersApplied] = useState<CardsFiltersApplied | null>(null);
     const [page, setPage] = useState<number>(0);
-    // TO-DO - make totalPageCount dinamic, getting from first getMyCards response (response.totalCards / GlobalVariables.myCardsDisplayCount);
     const [totalPageCount, setTotalPageCount] = useState<number>(4);
 
     useEffect(() => {
         const requestMyCards = async (): Promise<void> => {
-            const cards: CardInfo[] = await Cards.getMyCards(filtersApplied, page);
+            const response: CardsInfoAndTotalCount = await Cards.getMyCards(filtersApplied, page);
 
-            setCardsToDisplay(cards);
+            setCardsToDisplay(response.cards);
+            setTotalPageCount(Math.ceil(response.totalCards / GlobalVariables.myCardsDisplayCount));
         }
 
         requestMyCards();

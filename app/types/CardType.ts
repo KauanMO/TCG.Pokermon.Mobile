@@ -13,3 +13,8 @@ export type CardInfo = {
     },
     price: number
 }
+
+export type CardsInfoAndTotalCount = {
+    cards: CardInfo[],
+    totalCards: number
+}
