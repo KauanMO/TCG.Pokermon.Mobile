@@ -1,162 +1,80 @@
-import { CardInfo } from "@/app/types/CardType";
-import React, { useState, useRef } from "react";
-import { StyleSheet } from "react-native";
-import { Animated, Image, PanResponder, Pressable, Text, View } from "react-native";
-import StringHelper from "@/app/utils/StringHelper";
-import HoloEffect from "./HoloEffect";
-import Pokedollar from "../Currency/Pokedollar";
+import React from "react";
+import { View, StyleSheet, Image } from 'react-native';
+import { GestureDetector, Gesture } from 'react-native-gesture-handler';
+import Animated, {
+    useAnimatedStyle,
+    useSharedValue,
+    withSpring,
+} from 'react-native-reanimated';
 
-type Props = {
-    card: CardInfo;
-    width: number | null;
-    height: number | null;
-    borderRadius: number;
-    holo: boolean;
-    onExpand?: () => void;
-    info: boolean;
-    internal?: boolean
-};
+export type Props = {
+    image: string,
+    width: number,
+    onPress?: Function
+}
 
-export default function Card({
-    card,
-    width,
-    height,
-    borderRadius,
-    holo,
-    onExpand,
-    info,
-    internal
-}: Props) {
-    const rotateX = useRef(new Animated.Value(0)).current;
-    const rotateY = useRef(new Animated.Value(0)).current;
-    const [isMove, setIsMove] = useState(false);
+export default function Card(props: Props) {
+    const rotateX = useSharedValue(0);
+    const rotateY = useSharedValue(0);
 
-    const panResponder = PanResponder.create({
-        onStartShouldSetPanResponder: () => true,
-        onPanResponderMove: (_, gesture) => {
-            const dx = gesture.dx;
-            const dy = gesture.dy;
+    const panGesture = Gesture.Pan()
+        .onUpdate((e) => {
+            rotateX.value = e.translationY / 10;
+            rotateY.value = -e.translationX / 10;
+        })
+        .onEnd(() => {
+            rotateX.value = withSpring(0);
+            rotateY.value = withSpring(0);
+        });
 
-            rotateY.setValue(dx * .9);
-            rotateX.setValue(-dy * .9);
+    const tapGesture = Gesture.Tap()
+        .onEnd(() => {
+            props.onPress?.()
+        })
+        .runOnJS(true);
 
-            if (Math.abs(dx) > 10 || Math.abs(dy) > 10)
-                setIsMove(true);
-        },
-        onPanResponderRelease: () => {
-            if (!isMove && onExpand) onExpand();
+    const gesture = Gesture.Simultaneous(tapGesture, panGesture);
 
-            Animated.spring(rotateX, {
-                toValue: 0,
-                useNativeDriver: true,
-            }).start();
-            Animated.spring(rotateY, {
-                toValue: 0,
-                useNativeDriver: true,
-            }).start();
-
-            setIsMove(false);
-
-        }
-    });
-
-    const animatedStyle = {
+    const animatedStyle = useAnimatedStyle(() => ({
         transform: [
-            {
-                rotateY: rotateY.interpolate({
-                    inputRange: [-45, 0, 45],
-                    outputRange: ["-15deg", "0deg", "15deg"],
-                    extrapolate: "clamp",
-                }),
-            },
-            {
-                rotateX: rotateX.interpolate({
-                    inputRange: [-45, 0, 45],
-                    outputRange: ["15deg", "0deg", "-15deg"],
-                    extrapolate: "clamp",
-                }),
-            },
+            { perspective: 1000 },
+            { rotateX: `${rotateX.value}deg` },
+            { rotateY: `${rotateY.value}deg` },
         ],
-    };
+    }));
 
-    const styles = StyleSheet.create({
-        container: {
-            width,
-            height,
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center'
-        },
-        card_info_name: {
-            fontSize: 24,
-            color: 'white',
-            fontWeight: 500
-        },
-        card_info_text_container: {
-            display: 'flex',
-            alignItems: 'center'
-        },
-        card_info_text: {
-            fontSize: 20,
-            color: 'white'
-        },
-    });
+    const CARD_RATIO: number = 2 / 3;
+    const width: number = props.width;
+    const height: number = width / CARD_RATIO;
 
     return (
-        <Pressable onPress={onExpand} style={styles.container}>
-            {
-                info && (
-                    <View>
-                        <Text style={styles.card_info_name}>{card.name}</Text>
-                    </View>
-                )
-            }
-            <Animated.View
-                {...panResponder.panHandlers}
-                style={[
-                    {
-                        width,
-                        height,
-                        borderRadius,
-                        backgroundColor: "transparent",
-                        overflow: "hidden",
-                        justifyContent: "center",
-                        alignItems: "center"
-                    },
-                    animatedStyle,
-                ]}
-            >
-                <Image
-                    src={info ? card.images.large : card.images.small}
-                    style={{
-                        width: '100%',
-                        height: '100%',
-                        borderRadius,
-                    }}
-                    resizeMode="contain"
-                />
-                {
-                    holo && !info && (
-                        <HoloEffect
-                            width='100%'
-                            height='100%'
-                        />
-                    )
-                }
-            </Animated.View>
-            {
-                info && (
-                    <View style={styles.card_info_text_container}>
-                        {
-                            internal
-                                ? <Pokedollar value={card.price} coinSize={24} textColor="white" textSize={24} />
-                                : <Text style={styles.card_info_text}>Preço base: {StringHelper.getFormattedCurrency(card.price)}</Text>
-                        }
-
-                        <Text style={styles.card_info_text}>Raridade: {card.rarity}</Text>
-                    </View>
-                )
-            }
-        </Pressable>
+        <View style={styles.container}>
+            <GestureDetector gesture={gesture}>
+                <Animated.View style={[styles.card, animatedStyle, { width, height }]}>
+                    <Image source={{ uri: props.image }} style={styles.image} />
+                </Animated.View>
+            </GestureDetector>
+        </View>
     );
 }
+
+const styles = StyleSheet.create({
+    container: {
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    card: {
+        borderRadius: 12,
+        overflow: 'hidden',
+        backgroundColor: '#fff',
+        shadowColor: '#000',
+        shadowOpacity: 0.3,
+        shadowRadius: 10,
+        elevation: 10,
+    },
+    image: {
+        width: '100%',
+        height: '100%',
+        resizeMode: 'cover'
+    },
+});

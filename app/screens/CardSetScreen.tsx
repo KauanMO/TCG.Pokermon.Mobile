@@ -68,6 +68,7 @@ export default function CardSetScreen() {
             cards={cardSetInfo?.cards}
             internal={false}
             marginTop={70}
+            gap={4}
         />
 
         <PageController page={cardsPage} setCardsPage={setCardsPage} totalPage={cardsTotalPages} />

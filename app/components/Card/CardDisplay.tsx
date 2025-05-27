@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Dimensions, StyleSheet, View } from "react-native";
 import { CardInfo } from "@/app/types/CardType";
 import Card from "./Card";
+import ExpandedCard from "./ExpandedCard";
 
 type Prop = {
     cards: CardInfo[] | undefined,
@@ -9,7 +10,8 @@ type Prop = {
     marginTop: number,
     cardWidth?: number,
     cardHeight?: number,
-    rowCount?: number
+    rowCount?: number,
+    gap?: number
 };
 
 export default function CardDisplay(props: Prop) {
@@ -22,7 +24,7 @@ export default function CardDisplay(props: Prop) {
             justifyContent: 'center',
             alignItems: 'flex-start',
             flexWrap: 'wrap',
-            gap: 3,
+            gap: props?.gap ?? 8,
             marginTop: props.marginTop,
             maxHeight: props.rowCount && props.cardHeight
                 ? props.cardHeight * props.rowCount
@@ -47,40 +49,24 @@ export default function CardDisplay(props: Prop) {
         }
     });
 
-    return (
-        <>
-            <View style={styles.container}>
-                {
-                    props.cards?.map(card => (
-                        <Card
-                            key={props.internal ? card.id : card.externalCode}
-                            card={card}
-                            width={props.cardWidth ?? 75}
-                            height={props.cardHeight ?? 100}
-                            borderRadius={5}
-                            holo={card.rarity.includes('Holo')}
-                            onExpand={() => setExpandedCard(card)}
-                            info={false}
-                        />
-                    ))
-                }
-            </View>
+    return <>
+        <View style={styles.container}>
             {
-                expandedCard && (
-                    <View style={styles.overlay}>
-                        <Card
-                            card={expandedCard}
-                            width={300}
-                            height={500}
-                            borderRadius={10}
-                            holo={expandedCard.rarity.includes('Holo')}
-                            onExpand={() => setExpandedCard(null)}
-                            info={true}
-                            internal
-                        />
-                    </View>
+                props.cards?.map(card =>
+                    <Card
+                        key={card.id ?? card.externalCode}
+                        image={card.images.small}
+                        width={props.cardWidth ?? 75}
+                        onPress={() => setExpandedCard(card)}
+                    />
                 )
             }
-        </>
-    );
+        </View>
+        {
+            expandedCard && <ExpandedCard
+                card={expandedCard}
+                setExpanded={() => setExpandedCard(null)}
+            />
+        }
+    </>
 }

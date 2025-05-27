@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import CardDisplay from "../components/Card/CardDisplay";
 import { CardInfo, CardsInfoAndTotalCount } from "../types/CardType";
 import Cards from "../api/cards";
@@ -91,8 +91,7 @@ export default function CardsScreen() {
             cards={cardsToDisplay}
             internal={true}
             marginTop={10}
-            cardWidth={93.75}
-            cardHeight={125}
+            cardWidth={85}
             rowCount={4}
         />
 
