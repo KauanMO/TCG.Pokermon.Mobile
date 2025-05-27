@@ -11,7 +11,8 @@ export type CardInfo = {
         small: string,
         large: string
     },
-    price: number
+    price: number,
+    quality: number
 }
 
 export type CardsInfoAndTotalCount = {

@@ -66,6 +66,7 @@ export default function CardDisplay(props: Prop) {
             expandedCard && <ExpandedCard
                 card={expandedCard}
                 setExpanded={() => setExpandedCard(null)}
+                internal={props.internal}
             />
         }
     </>

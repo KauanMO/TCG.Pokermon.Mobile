@@ -8,7 +8,8 @@ const { width, height } = Dimensions.get('window');
 
 export type Props = {
     card: CardInfo,
-    setExpanded: Function
+    setExpanded: Function,
+    internal?: boolean
 }
 
 export default function ExpandedCard(props: Props) {
@@ -26,6 +27,21 @@ export default function ExpandedCard(props: Props) {
             <View>
                 <Text style={[styles.card_info_text, styles.card_text]}>{props.card.rarity}</Text>
             </View>
+            {
+                props.internal && <View>
+                    <Text style={[styles.card_info_text, styles.card_text]}>Qualidade: {props.card.quality}</Text>
+                    {
+                        props.card.evolvesFrom &&
+                        <Text style={[styles.card_info_text, styles.card_text]}>Evolui de: {props.card.evolvesFrom}</Text>
+                    }
+                    {
+                        props.card.description &&
+                        <Text style={[styles.card_info_text, styles.card_text]}>{props.card.description}</Text>
+                    }
+                    <Text style={[styles.card_info_text, styles.card_text]}>Tipos: {props.card.types}</Text>
+                    <Text style={[styles.card_info_text, styles.card_text]}>Subtipos: {props.card.subTypes}</Text>
+                </View>
+            }
         </View>
     </Pressable>
 }

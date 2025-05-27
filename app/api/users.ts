@@ -38,7 +38,7 @@ const login = async (data: LoginRequest): Promise<LoginResponse | null> => {
     } catch (e) {
         const error = e as AxiosError;
 
-        console.error(error.response);
+        console.error(error.request);
 
         Toast.show({
             type: 'error',
