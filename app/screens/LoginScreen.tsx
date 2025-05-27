@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigation } from "@react-navigation/native";
+import { CommonActions, useNavigation } from "@react-navigation/native";
 import Users from '../api/users';
 import { LoginRequest, LoginResponse } from "../types/UserType";
 import { Button, StyleSheet, Text, TextInput, View } from "react-native";
@@ -11,15 +11,18 @@ export default function LoginScreen() {
     const [error, setError] = useState<any>();
 
     useEffect(() => {
-        return navigation.navigate('Main' as never);
-
         const checkUser = async () => {
             const token = await Storage.getToken();
 
             if (token != null) {
                 try {
                     await Auth.checkToken();
-                    navigation.navigate('Main' as never);
+                    navigation.dispatch(
+                        CommonActions.reset({
+                            index: 0,
+                            routes: [{ name: 'Main' }]
+                        })
+                    );
                 } catch (e) {
                     const userCredentials = await Storage.getCredentials();
 
@@ -33,7 +36,7 @@ export default function LoginScreen() {
         };
 
         checkUser();
-    }, [])
+    }, []);
 
 
     const [formData, setFormData] = useState({
@@ -51,7 +54,12 @@ export default function LoginScreen() {
         setLoading(true);
 
         if (await Users.login(formData)) {
-            navigation.navigate('Main' as never);
+            navigation.dispatch(
+                CommonActions.reset({
+                    index: 0,
+                    routes: [{ name: 'Main' }]
+                })
+            );
         } else {
             console.error('Error at user login');
         }
