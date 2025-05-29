@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { CommonActions, useNavigation } from "@react-navigation/native";
 import Users from '../api/users';
-import { LoginRequest, LoginResponse } from "../types/UserType";
+import { LoginRequest } from "../types/UserType";
 import { Button, StyleSheet, Text, TextInput, View } from "react-native";
 import Storage from "@/services/storage";
 import Auth from "../api/auth";
 
 export default function LoginScreen() {
     const navigation = useNavigation();
-    const [error, setError] = useState<any>();
 
     useEffect(() => {
         const checkUser = async () => {

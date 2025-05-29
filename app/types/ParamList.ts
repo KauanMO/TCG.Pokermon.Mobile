@@ -10,4 +10,5 @@ export type RootStackParamList = {
     Main: undefined,
     Register: undefined,
     FavoritePokemonChoose: undefined
+    UserConfig: undefined
 }

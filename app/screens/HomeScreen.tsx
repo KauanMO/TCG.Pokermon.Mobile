@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { UserInfo } from "../types/UserType";
-import { StyleSheet, Text, View } from "react-native";
+import { Dimensions, View } from "react-native";
 import Users from "../api/users";
-import StringHelper from "../utils/StringHelper";
 import Pokedollar from "../components/Currency/Pokedollar";
 import FavoritePokemonIcon from "../components/Icons/FavoritePokemonIcon";
+import { useNavigation } from "expo-router";
+import { StyleSheet } from "react-native";
+import Constants from "../utils/Constants";
 
 export default function HomeScreen() {
+    const navigation = useNavigation();
     const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
 
     useEffect(() => {
@@ -19,19 +22,13 @@ export default function HomeScreen() {
         requestUserInfo()
     }, [])
 
-    const styles = StyleSheet.create({
-        hello: {
-            fontSize: 24,
-            fontWeight: 'bold'
-        }
-    });
-
-    return <View>
+    return <View style={styles.container}>
         <FavoritePokemonIcon
             favoritePokemonCode={userInfo?.favoritePokemonCode ?? 0}
             position="absolute"
             top={6}
             left={16}
+            onPress={() => navigation.navigate('UserConfig' as never)}
         />
 
         {
@@ -46,3 +43,12 @@ export default function HomeScreen() {
         }
     </View>
 }
+
+const { width, height } = Dimensions.get('window');
+const styles = StyleSheet.create({
+    container: {
+        backgroundColor: Constants.colors.background,
+        width,
+        height
+    }
+});

@@ -10,7 +10,8 @@ export type UserInfo = {
     balance: number,
     cardAmount: number,
     deckAmount: number,
-    favoritePokemonCode: number
+    favoritePokemonCode: number,
+    hashedEmail?: string
 }
 
 export type LoginRequest = {

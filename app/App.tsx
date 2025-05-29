@@ -1,10 +1,9 @@
 import React, { useRef, useState } from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
-import { RootStackParamList, RootTabParamList } from "./types/ParamList";
-import { NavigationProp } from "@react-navigation/native";
+import { RootStackParamList } from "./types/ParamList";
+import { DarkTheme, NavigationProp } from "@react-navigation/native";
 
 import LoginScreen from "./screens/LoginScreen";
 import HomeScreen from "./screens/HomeScreen";
@@ -17,17 +16,19 @@ import PagerView from 'react-native-pager-view';
 
 import Toast from 'react-native-toast-message';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
+import UserConfigScreen from "./screens/UserConfigScreen";
+
+import { DefaultTheme, MD3DarkTheme, PaperProvider, useTheme } from 'react-native-paper';
+import { ThemeProp } from "react-native-paper/lib/typescript/types";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
-const Tab = createBottomTabNavigator<RootTabParamList>();
 
-export type TabNavigation = NavigationProp<RootTabParamList>;
 export type StackNavigation = NavigationProp<RootStackParamList>;
 
 function TabNavigator() {
     const pagerRef = useRef<PagerView>(null);
-    const [page, setPage] = useState(1); // página inicial: Home
+    const [page, setPage] = useState(1);
 
     const goToPage = (index: number) => {
         pagerRef.current?.setPage(index);
@@ -75,16 +76,19 @@ function TabNavigator() {
 export default function App() {
     return (
         <GestureHandlerRootView style={{ flex: 1 }}>
-            <Stack.Navigator screenOptions={{
-                animation: 'simple_push'
-            }}>
-                <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
-                <Stack.Screen name="FavoritePokemonChoose" component={FavoritePokemonChooseScreen} options={{ headerShown: false }} />
-                <Stack.Screen name="Main" component={TabNavigator} options={{ headerShown: false }} />
-                <Stack.Screen name="CardSet" component={CardSetScreen} options={{ headerShown: false }} />
-                <Stack.Screen name="Register" component={RegisterScreen} options={{ headerShown: false }} />
-            </Stack.Navigator>
-            <Toast />
+            <PaperProvider>
+                <Stack.Navigator screenOptions={{
+                    animation: 'simple_push'
+                }}>
+                    <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
+                    <Stack.Screen name="FavoritePokemonChoose" component={FavoritePokemonChooseScreen} options={{ headerShown: false }} />
+                    <Stack.Screen name="Main" component={TabNavigator} options={{ headerShown: false }} />
+                    <Stack.Screen name="CardSet" component={CardSetScreen} options={{ headerShown: false }} />
+                    <Stack.Screen name="Register" component={RegisterScreen} options={{ headerShown: false }} />
+                    <Stack.Screen name="UserConfig" component={UserConfigScreen} options={{ headerShown: false }} />
+                </Stack.Navigator>
+                <Toast />
+            </PaperProvider>
         </GestureHandlerRootView>
     );
 }

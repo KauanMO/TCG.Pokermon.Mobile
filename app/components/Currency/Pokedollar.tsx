@@ -1,6 +1,7 @@
 import React from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 import StringHelper from "@/app/utils/StringHelper";
+import Constants from "@/app/utils/Constants";
 
 export type Props = {
     value: number,
@@ -24,7 +25,7 @@ export default function Pokedollar(props: Props) {
             right: props.right ?? null
         },
         value_text: {
-            color: props.textColor ?? 'black',
+            color: props.textColor ?? Constants.colors.textColor,
             fontSize: props.textSize ?? 16
         },
         coin: {
