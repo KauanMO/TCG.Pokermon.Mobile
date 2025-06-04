@@ -1,3 +1,4 @@
+import Constants from "@/app/utils/Constants";
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
@@ -26,7 +27,8 @@ export default function PageController(props: Props) {
             marginTop: 20
         },
         pageControllerText: {
-            fontSize: 20
+            fontSize: 20,
+            color: Constants.colors.textColor
         }
     });
 

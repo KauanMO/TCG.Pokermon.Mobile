@@ -45,6 +45,7 @@ export default function HomeScreen() {
 }
 
 const { width, height } = Dimensions.get('window');
+
 const styles = StyleSheet.create({
     container: {
         backgroundColor: Constants.colors.background,

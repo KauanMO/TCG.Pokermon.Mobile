@@ -46,11 +46,15 @@ const login = async (data: LoginRequest): Promise<LoginResponse | null> => {
             text2: error.response?.data as string
         });
 
-        Storage.clearCredentials();
-        Storage.clearToken();
+        logOff();
 
         return null;
     }
+}
+
+const logOff = async (): Promise<void> => {
+    Storage.clearCredentials();
+    Storage.clearToken();
 }
 
 const getUserInfo = async (): Promise<UserInfo | null> => {
@@ -85,5 +89,6 @@ export default {
     register,
     login,
     getUserInfo,
-    updateFavoritePokemonCode
+    updateFavoritePokemonCode,
+    logOff
 }

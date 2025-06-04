@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, View } from "react-native";
+import { Dimensions, StyleSheet, View } from "react-native";
 import CardDisplay from "../components/Card/CardDisplay";
 import { CardInfo, CardsInfoAndTotalCount } from "../types/CardType";
 import Cards from "../api/cards";
@@ -7,6 +7,7 @@ import DropDown from "../components/DropDown";
 import { CardsFiltersApplied } from "../types/Filters";
 import PageController from "../components/PageController/PageController";
 import GlobalVariables from "../utils/GlobalVariables";
+import Constants from "../utils/Constants";
 
 export default function CardsScreen() {
     const [cardsToDisplay, setCardsToDisplay] = useState<CardInfo[]>([]);
@@ -33,36 +34,6 @@ export default function CardsScreen() {
         });
     }
 
-    const styles = StyleSheet.create({
-        filters_container: {
-            display: 'flex',
-            flexDirection: 'row',
-            gap: 16,
-            margin: 8,
-            alignContent: 'center',
-            justifyContent: 'center'
-        },
-        cards_order_container: {
-
-        },
-        filter_container: {
-            display: 'flex',
-            flexDirection: 'row',
-            gap: 10,
-            fontSize: 16,
-            height: 50,
-            borderWidth: 1,
-            borderRadius: 8,
-            alignItems: 'center',
-            justifyContent: 'center',
-            width: 100,
-            backgroundColor: '#292d3e'
-        },
-        filter_text: {
-            color: '#bfc7d5'
-        }
-    });
-
     function onChangeOrderFilter(order: string) {
         const [orderBy, asc]: ['name' | 'price', boolean] = (() => {
             const [field, direction] = order.split(' ') as ['name' | 'price', string];
@@ -77,7 +48,7 @@ export default function CardsScreen() {
         });
     }
 
-    return <View>
+    return <View style={styles.container}>
         <View style={styles.filters_container}>
             <View style={styles.cards_order_container}>
                 <DropDown.CardsOrderDropDownPicker onChangeValue={onChangeOrderFilter} />
@@ -102,3 +73,40 @@ export default function CardsScreen() {
         />
     </View>
 }
+
+const { width, height } = Dimensions.get('window');
+
+const styles = StyleSheet.create({
+    container: {
+        backgroundColor: Constants.colors.background,
+        width,
+        height
+    },
+    filters_container: {
+        display: 'flex',
+        flexDirection: 'row',
+        gap: 16,
+        margin: 8,
+        alignContent: 'center',
+        justifyContent: 'center'
+    },
+    cards_order_container: {
+
+    },
+    filter_container: {
+        display: 'flex',
+        flexDirection: 'row',
+        gap: 10,
+        fontSize: 16,
+        height: 50,
+        borderWidth: 1,
+        borderRadius: 8,
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: 100,
+        backgroundColor: '#292d3e'
+    },
+    filter_text: {
+        color: '#bfc7d5'
+    }
+});

@@ -11,6 +11,8 @@ import OpenCardSet from "../components/CardSet/OpenCardSet";
 import PageController from "../components/PageController/PageController";
 import Pokedollar from "../components/Currency/Pokedollar";
 import Modal from 'react-native-modal';
+import Constants from "../utils/Constants";
+import { Dimensions } from "react-native";
 
 export default function CardSetScreen() {
     const [cardSetInfo, setCardSetInfo] = useState<CardSetCards>();
@@ -32,24 +34,9 @@ export default function CardSetScreen() {
         requestCardSetById();
     }, [cardsPage]);
 
-    const styles = StyleSheet.create({
-        container: {
-            width: '100%',
-            height: '100%',
-            position: 'relative'
-        },
-        cardSetLogo: {
-            width: 200,
-            height: 50,
-            position: 'absolute',
-            top: 10,
-            left: 100,
-            flex: 1
-        }
-    });
-
     return <View style={styles.container}>
         <GoBackIcon />
+        
         <Image
             src={cardSetInfo?.cardSet.logo}
             style={styles.cardSetLogo}
@@ -62,7 +49,7 @@ export default function CardSetScreen() {
             right={16}
             top={16}
         />
-        
+
 
         <CardDisplay
             cards={cardSetInfo?.cards}
@@ -76,3 +63,22 @@ export default function CardSetScreen() {
         <OpenCardSet price={cardSetInfo?.cardSet.price ?? 0} cardSetId={id as number} />
     </View>
 }
+
+const { width, height } = Dimensions.get('window');
+
+const styles = StyleSheet.create({
+    container: {
+        backgroundColor: Constants.colors.background,
+        width,
+        height,
+        position: 'relative'
+    },
+    cardSetLogo: {
+        width: 200,
+        height: 50,
+        position: 'absolute',
+        top: 10,
+        left: 100,
+        flex: 1
+    }
+});

@@ -1,6 +1,7 @@
 const colors = {
     background: '#383737',
-    textColor: 'white'
+    textColor: 'white',
+    red: 'red'
 }
 
 export default {

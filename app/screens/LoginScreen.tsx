@@ -2,9 +2,10 @@ import React, { useEffect, useState } from "react";
 import { CommonActions, useNavigation } from "@react-navigation/native";
 import Users from '../api/users';
 import { LoginRequest } from "../types/UserType";
-import { Button, StyleSheet, Text, TextInput, View } from "react-native";
+import { Button, Dimensions, StyleSheet, Text, TextInput, View } from "react-native";
 import Storage from "@/services/storage";
 import Auth from "../api/auth";
+import Constants from "../utils/Constants";
 
 export default function LoginScreen() {
     const navigation = useNavigation();
@@ -16,6 +17,7 @@ export default function LoginScreen() {
             if (token != null) {
                 try {
                     await Auth.checkToken();
+
                     navigation.dispatch(
                         CommonActions.reset({
                             index: 0,
@@ -36,7 +38,6 @@ export default function LoginScreen() {
 
         checkUser();
     }, []);
-
 
     const [formData, setFormData] = useState({
         email: 'kauaanmatheus@gmail.com',
@@ -66,34 +67,6 @@ export default function LoginScreen() {
         setLoading(false);
     }
 
-    const styles = StyleSheet.create({
-        container: {
-            flex: 1,
-            justifyContent: 'center',
-            alignItems: 'center',
-            padding: 20
-        },
-        title: {
-            fontSize: 24,
-            fontWeight: 'bold',
-            marginBottom: 20
-        },
-        form_input: {
-            width: '100%',
-            height: 40,
-            borderColor: '#ccc',
-            borderWidth: 1,
-            borderRadius: 5,
-            marginBottom: 10,
-            paddingHorizontal: 10
-        },
-        form_buttons_container: {
-            display: 'flex',
-            flexDirection: 'row',
-            gap: 16
-        }
-    })
-
     return (
         <View style={styles.container}>
             <Text style={styles.title}>Login</Text>
@@ -122,3 +95,38 @@ export default function LoginScreen() {
         </View>
     )
 }
+
+const { width, height } = Dimensions.get('window');
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 20,
+        backgroundColor: Constants.colors.background,
+        width,
+        height
+    },
+    title: {
+        fontSize: 24,
+        fontWeight: 'bold',
+        marginBottom: 20,
+        color: Constants.colors.textColor
+    },
+    form_input: {
+        width: '100%',
+        height: 40,
+        borderColor: '#ccc',
+        borderWidth: 1,
+        borderRadius: 5,
+        marginBottom: 10,
+        paddingHorizontal: 10,
+        color: Constants.colors.textColor
+    },
+    form_buttons_container: {
+        display: 'flex',
+        flexDirection: 'row',
+        gap: 16
+    }
+});

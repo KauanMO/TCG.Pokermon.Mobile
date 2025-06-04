@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Image, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
+import { Button, Image, Pressable, StyleSheet, Text, View } from "react-native";
 import Cards from "../../api/cards";
 import { CardInfo } from "../../types/CardType";
 import HoloEffect from "../Card/HoloEffect";
@@ -42,7 +42,81 @@ export default function OpenCardSet(props: Props) {
         getUserBalance();
     }, []);
 
-    const styles = StyleSheet.create({
+    return <View style={styles.container}>
+        <Modal isVisible={buyModalOpen}>
+            <View style={styles.buy_modal}>
+                <View style={styles.modal_buy_info}>
+                    <View>
+                        <Text>Seu saldo: </Text>
+                        <Pokedollar value={userBalance} coinSize={24} />
+                    </View>
+
+                    <View>
+                        <Text>Preço final: </Text>
+                        <Pokedollar value={props.price * buyAmount} coinSize={24} />
+                    </View>
+
+                    <View>
+                        <Text>Novo saldo: </Text>
+                        <Pokedollar value={userBalance - props.price * buyAmount} coinSize={24} />
+                    </View>
+                </View>
+
+                <View>
+                    <Text>Quantidade:</Text>
+                    <InputSpinner
+                        min={1}
+                        onChange={v => setBuyAmount(v)}
+                        maxLength={3}
+                        style={{
+                            width: '80%'
+                        }}
+                        skin="round"
+                    />
+                </View>
+
+                <View style={styles.modal_buttons_container}>
+                    <Button color={'green'} title="Confirmar" onPress={() => sendBuyRequest()} />
+                    <Button color={'red'} title="Cancelar" onPress={() => setBuyModalOpen(false)} />
+                </View>
+            </View>
+        </Modal>
+
+        {
+            cardsOpenned[0] != null && currentCardPosition >= 0 &&
+            <Pressable onPress={nextCard} style={styles.opened_cardset}>
+                <View>
+                    <View style={styles.cards_container}>
+                        <View>
+                            <Image
+                                src={cardsOpenned[currentCardPosition].images.large}
+                                style={{
+                                    width: 330,
+                                    height: 500,
+                                    borderRadius: 14,
+                                }}
+                                resizeMode="contain"
+                            />
+                            {
+                                cardsOpenned[currentCardPosition].rarity.includes('Holo') &&
+                                <HoloEffect
+                                    width={400}
+                                    height={100}
+                                />
+                            }
+                        </View>
+                    </View>
+                </View>
+            </Pressable>
+        }
+
+        <View style={styles.buyButton}>
+            <Button title="Comprar" onPress={() => setBuyModalOpen(true)} />
+        </View>
+    </View >
+}
+
+const styles = StyleSheet.create({
         container: {
             width: '100%',
             height: '100%',
@@ -90,77 +164,3 @@ export default function OpenCardSet(props: Props) {
             display: 'flex',
         }
     });
-
-    return <View style={styles.container}>
-        <Modal isVisible={buyModalOpen}>
-            <View style={styles.buy_modal}>
-                <View style={styles.modal_buy_info}>
-                    <View>
-                        <Text>Seu saldo: </Text>
-                        <Pokedollar value={userBalance} coinSize={24} />
-                    </View>
-
-                    <View>
-                        <Text>Preço final: </Text>
-                        <Pokedollar value={props.price * buyAmount} coinSize={24} />
-                    </View>
-
-                    <View>
-                        <Text>Novo saldo: </Text>
-                        <Pokedollar value={userBalance - props.price * buyAmount} coinSize={24} />
-                    </View>
-                </View>
-
-                <View>
-                    <Text>Quantidade:</Text>
-                    <InputSpinner
-                        min={1}
-                        onChange={v => setBuyAmount(v)}
-                        maxLength={3}
-                        style={{
-                            width: '80%'
-                        }}
-                        skin="round"
-                    />
-                </View>
-
-                <View style={styles.modal_buttons_container}>
-                    <Button color={'green'} title="Confirmar" onPress={() => sendBuyRequest()} />
-                    <Button color={'red'} title="Cancelar" onPress={() => setBuyModalOpen(false)} />
-                </View>
-            </View>
-        </Modal>
-
-        {
-            cardsOpenned[0] != null && currentCardPosition >= 0 &&
-            < Pressable onPress={nextCard} style={styles.opened_cardset}>
-                <View>
-                    <View style={styles.cards_container}>
-                        <View>
-                            <Image
-                                src={cardsOpenned[currentCardPosition].images.large}
-                                style={{
-                                    width: 330,
-                                    height: 500,
-                                    borderRadius: 14,
-                                }}
-                                resizeMode="contain"
-                            />
-                            {
-                                cardsOpenned[currentCardPosition].rarity.includes('Holo') &&
-                                <HoloEffect
-                                    width={400}
-                                    height={100}
-                                />
-                            }
-                        </View>
-                    </View>
-                </View>
-            </Pressable>
-        }
-
-        <View style={styles.buyButton}>
-            <Button title="Comprar" onPress={() => setBuyModalOpen(true)} />
-        </View>
-    </View >
-}

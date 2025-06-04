@@ -1,9 +1,9 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 import { RootStackParamList } from "./types/ParamList";
-import { DarkTheme, NavigationProp } from "@react-navigation/native";
+import { NavigationProp } from "@react-navigation/native";
 
 import LoginScreen from "./screens/LoginScreen";
 import HomeScreen from "./screens/HomeScreen";
@@ -19,8 +19,10 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import UserConfigScreen from "./screens/UserConfigScreen";
 
-import { DefaultTheme, MD3DarkTheme, PaperProvider, useTheme } from 'react-native-paper';
-import { ThemeProp } from "react-native-paper/lib/typescript/types";
+import { PaperProvider } from 'react-native-paper';
+import Constants from "./utils/Constants";
+
+import * as NavigationBar from 'expo-navigation-bar';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -34,6 +36,11 @@ function TabNavigator() {
         pagerRef.current?.setPage(index);
         setPage(index);
     };
+
+    useEffect(() => {
+        NavigationBar.setBackgroundColorAsync(Constants.colors.background);
+        NavigationBar.setVisibilityAsync('hidden');
+    }, []);
 
     return <View style={{ flex: 1 }}>
         <PagerView
@@ -74,6 +81,11 @@ function TabNavigator() {
 }
 
 export default function App() {
+    useEffect(() => {
+        NavigationBar.setBackgroundColorAsync(Constants.colors.background);
+        NavigationBar.setVisibilityAsync('hidden');
+    }, []);
+
     return (
         <GestureHandlerRootView style={{ flex: 1 }}>
             <PaperProvider>
@@ -97,7 +109,7 @@ const styles = StyleSheet.create({
     tabBar: {
         flexDirection: "row",
         justifyContent: "space-around",
-        backgroundColor: "#fff",
+        backgroundColor: Constants.colors.background,
     },
     tab: {
         padding: 10,
