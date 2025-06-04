@@ -2,7 +2,7 @@
   "cli": {
     "version": ">= 16.3.1",
     "appVersionSource": "remote",
-    "requireCommit": "false"
+    "requireCommit": true
   },
   "build": {
     "development": {
