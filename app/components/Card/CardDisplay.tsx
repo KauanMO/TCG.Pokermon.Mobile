@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Dimensions, StyleSheet, View } from "react-native";
-import { CardInfo } from "@/app/types/CardType";
+import { CardInfo, CardsObtainedCount } from "@/app/types/CardType";
 import Card from "./Card";
 import ExpandedCard from "./ExpandedCard";
 
@@ -11,12 +11,22 @@ type Prop = {
     cardWidth?: number,
     cardHeight?: number,
     rowCount?: number,
-    gap?: number
+    gap?: number,
+    cardsObtainedCount?: CardsObtainedCount[]
 };
 
 export default function CardDisplay(props: Prop) {
     const [expandedCard, setExpandedCard] = useState<CardInfo | null>(null);
     const { width, height } = Dimensions.get('window');
+    const [cardsObtainedCountNumber, setCardsObtainedCountNumber] = useState<number | undefined>(0);
+
+    useEffect(() => {
+        if (expandedCard)
+            setCardsObtainedCountNumber(props.cardsObtainedCount
+                ?.find(c => c.shopCardId == expandedCard.id)
+                ?.count);
+
+    }, [expandedCard]);
 
     const styles = StyleSheet.create({
         container: {
@@ -67,6 +77,7 @@ export default function CardDisplay(props: Prop) {
                 card={expandedCard}
                 setExpanded={() => setExpandedCard(null)}
                 internal={props.internal}
+                cardsObtainedCount={cardsObtainedCountNumber}
             />
         }
     </>

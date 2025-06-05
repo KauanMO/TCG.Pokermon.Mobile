@@ -9,7 +9,8 @@ const { width, height } = Dimensions.get('window');
 export type Props = {
     card: CardInfo,
     setExpanded: Function,
-    internal?: boolean
+    internal?: boolean,
+    cardsObtainedCount?: number
 }
 
 export default function ExpandedCard(props: Props) {
@@ -27,6 +28,11 @@ export default function ExpandedCard(props: Props) {
             <View>
                 <Text style={[styles.card_info_text, styles.card_text]}>{props.card.rarity}</Text>
             </View>
+            {
+                props.cardsObtainedCount && <View>
+                    <Text style={[styles.card_info_text, styles.card_text]}>({props.cardsObtainedCount})</Text>
+                </View>
+            }
             {
                 props.internal && <View>
                     <Text style={[styles.card_info_text, styles.card_text]}>Qualidade: {props.card.quality}</Text>

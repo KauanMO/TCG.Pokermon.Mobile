@@ -1,6 +1,6 @@
 import axios, { AxiosError } from "axios";
 import config from "./config";
-import { CardInfo, CardsInfoAndTotalCount } from "../types/CardType";
+import { CardInfo, CardsInfoAndTotalCount, CardsObtainedCount } from "../types/CardType";
 import storage from "@/services/storage";
 import { CardsFiltersApplied } from "../types/Filters";
 import GlobalVariables from "../utils/GlobalVariables";
@@ -48,7 +48,24 @@ const openCardSet = async (setId: number, amount: number): Promise<CardInfo[]> =
     }
 }
 
+const cardsObtainedSet = async (setId: number): Promise<CardsObtainedCount[]> => {
+    try {
+        const response = await axios.get(`${baseUrl}/cards-obtained-set?cardSetId=${setId}`, {
+            headers: {
+                Authorization: `Bearer ${await storage.getToken()}`
+            }
+        });
+
+        return response.data;
+    } catch (e) {
+        const error = e as AxiosError;
+
+        return [];
+    }
+}
+
 export default {
     getMyCards,
-    openCardSet
+    openCardSet,
+    cardsObtainedSet
 }

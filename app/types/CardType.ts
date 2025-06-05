@@ -19,3 +19,8 @@ export type CardsInfoAndTotalCount = {
     cards: CardInfo[],
     totalCards: number
 }
+
+export type CardsObtainedCount = {
+    shopCardId: number,
+    count: number
+}
