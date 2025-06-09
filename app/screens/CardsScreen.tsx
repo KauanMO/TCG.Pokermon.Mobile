@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Dimensions, StyleSheet, View } from "react-native";
+import { Dimensions, StyleSheet, Text, View } from "react-native";
 import CardDisplay from "../components/Card/CardDisplay";
 import { CardInfo, CardsInfoAndTotalCount } from "../types/CardType";
 import Cards from "../api/cards";
@@ -8,8 +8,11 @@ import { CardsFiltersApplied } from "../types/Filters";
 import PageController from "../components/PageController/PageController";
 import GlobalVariables from "../utils/GlobalVariables";
 import Constants from "../utils/Constants";
+import { Button } from "react-native-paper";
+import { useNavigation } from "expo-router";
 
 export default function CardsScreen() {
+    const navigate = useNavigation();
     const [cardsToDisplay, setCardsToDisplay] = useState<CardInfo[]>([]);
     const [filtersApplied, setFiltersApplied] = useState<CardsFiltersApplied | null>(null);
     const [page, setPage] = useState<number>(0);
@@ -71,6 +74,10 @@ export default function CardsScreen() {
             setCardsPage={setPage}
             totalPage={totalPageCount}
         />
+
+        <Button onPress={() => navigate.navigate('DecksManager' as never)} style={styles.manage_decks_button}>
+            <Text>Gerenciar decks</Text>
+        </Button>
     </View>
 }
 
@@ -108,5 +115,8 @@ const styles = StyleSheet.create({
     },
     filter_text: {
         color: '#bfc7d5'
+    },
+    manage_decks_button: {
+        backgroundColor: 'blue'
     }
 });

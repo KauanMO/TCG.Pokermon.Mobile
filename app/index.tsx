@@ -23,6 +23,7 @@ import { PaperProvider } from 'react-native-paper';
 import Constants from "./utils/Constants";
 
 import * as NavigationBar from 'expo-navigation-bar';
+import DecksManagerScreen from "./screens/DecksManagerScreen";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -98,6 +99,7 @@ export default function App() {
                     <Stack.Screen name="CardSet" component={CardSetScreen} options={{ headerShown: false }} />
                     <Stack.Screen name="Register" component={RegisterScreen} options={{ headerShown: false }} />
                     <Stack.Screen name="UserConfig" component={UserConfigScreen} options={{ headerShown: false }} />
+                    <Stack.Screen name="DecksManager" component={DecksManagerScreen} options={{ headerShown: false }} />
                 </Stack.Navigator>
                 <Toast />
             </PaperProvider>
