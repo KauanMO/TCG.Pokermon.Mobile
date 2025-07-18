@@ -12,7 +12,8 @@ type Prop = {
     cardHeight?: number,
     rowCount?: number,
     gap?: number,
-    cardsObtainedCount?: CardsObtainedCount[]
+    cardsObtainedCount?: CardsObtainedCount[],
+    cardsSelled?: Function
 };
 
 export default function CardDisplay(props: Prop) {
@@ -20,12 +21,16 @@ export default function CardDisplay(props: Prop) {
     const { width, height } = Dimensions.get('window');
     const [cardsObtainedCountNumber, setCardsObtainedCountNumber] = useState<number | undefined>(0);
 
+    const cardsSelled = (ids: number[]) => {
+        props.cardsSelled?.(ids)
+        setExpandedCard(null);
+    }
+
     useEffect(() => {
         if (expandedCard)
             setCardsObtainedCountNumber(props.cardsObtainedCount
                 ?.find(c => c.shopCardId == expandedCard.id)
                 ?.count);
-
     }, [expandedCard]);
 
     const styles = StyleSheet.create({
@@ -78,6 +83,7 @@ export default function CardDisplay(props: Prop) {
                 setExpanded={() => setExpandedCard(null)}
                 internal={props.internal}
                 cardsObtainedCount={cardsObtainedCountNumber}
+                cardsSelled={cardsSelled}
             />
         }
     </>

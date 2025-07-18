@@ -64,8 +64,21 @@ const cardsObtainedSet = async (setId: number): Promise<CardsObtainedCount[]> =>
     }
 }
 
+const sellCardById = async (id: number): Promise<void> => {
+    try {
+        await axios.delete(`${baseUrl}/sell/${id}`, {
+            headers: {
+                Authorization: `Bearer ${await storage.getToken()}`
+            }
+        });
+    } catch (e) {
+        const error = e as AxiosError
+    }
+}
+
 export default {
     getMyCards,
     openCardSet,
-    cardsObtainedSet
+    cardsObtainedSet,
+    sellCardById
 }

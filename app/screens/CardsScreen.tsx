@@ -37,6 +37,8 @@ export default function CardsScreen() {
         });
     }
 
+    const updateCardsSelleds = (ids: number[]) => setCardsToDisplay(cardsToDisplay.filter(c => c.id && !ids.includes(c.id)))
+
     function onChangeOrderFilter(order: string) {
         const [orderBy, asc]: ['name' | 'price', boolean] = (() => {
             const [field, direction] = order.split(' ') as ['name' | 'price', string];
@@ -67,6 +69,7 @@ export default function CardsScreen() {
             marginTop={10}
             cardWidth={85}
             rowCount={4}
+            cardsSelled={updateCardsSelleds}
         />
 
         <PageController

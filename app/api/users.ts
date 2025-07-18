@@ -85,10 +85,13 @@ const updateFavoritePokemonCode = async (pokemonCode: number): Promise<void> => 
     }
 }
 
+var userInfo: UserInfo | null | undefined;
+
 export default {
     register,
     login,
     getUserInfo,
     updateFavoritePokemonCode,
-    logOff
+    logOff,
+    userInfo
 }
