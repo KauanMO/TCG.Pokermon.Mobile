@@ -71,9 +71,10 @@ export default function ExpandedCard(props: Props) {
 }
 
 function SellCardsModal({ cards, closeSellCardModal, cardSelled }: { cards: CardInfo[], closeSellCardModal: Function, cardSelled: Function }) {
-    const sendSellCardRequest = () => {
-        cards[0].id && Cards.sellCardById(cards[0].id)
-        cardSelled([cards[0].id])
+    const sendSellCardsRequest = () => {
+        Cards.sellCardById(cards.map(c => c.id))
+
+        cardSelled(cards.map(c => c.id))
     }
 
     const cardsTotalValue = cards.reduce((acc, card) => acc + card.price, 0)
@@ -92,7 +93,7 @@ function SellCardsModal({ cards, closeSellCardModal, cardSelled }: { cards: Card
             <Pokedollar textColor="black" value={Users.userInfo?.balance ?? 0 + cardsTotalValue} textSize={20} coinSize={20} />
 
             <View style={styles.sell_cards_buttons_container}>
-                <Button buttonColor="green" onPress={() => sendSellCardRequest()} >Confirmar</Button>
+                <Button buttonColor="green" onPress={() => sendSellCardsRequest()} >Confirmar</Button>
                 <Button buttonColor="red" onPress={() => { }} >Cancelar</Button>
             </View>
         </View>

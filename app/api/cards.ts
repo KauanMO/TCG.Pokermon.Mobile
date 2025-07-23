@@ -64,9 +64,11 @@ const cardsObtainedSet = async (setId: number): Promise<CardsObtainedCount[]> =>
     }
 }
 
-const sellCardById = async (id: number): Promise<void> => {
+const sellCardById = async (ids: (number | null)[]): Promise<void> => {
     try {
-        await axios.delete(`${baseUrl}/sell/${id}`, {
+        const query = ids.map(id => `ids=${id}`).join('&');
+
+        await axios.delete(`${baseUrl}/sell?${query}`, {
             headers: {
                 Authorization: `Bearer ${await storage.getToken()}`
             }
