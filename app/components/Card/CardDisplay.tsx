@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Dimensions, StyleSheet, View } from "react-native";
+import { Dimensions, Pressable, StyleSheet, View } from "react-native";
 import { CardInfo, CardsObtainedCount } from "@/app/types/CardType";
 import Card from "./Card";
 import ExpandedCard from "./ExpandedCard";
+import cards from "@/app/api/cards";
 
 type Prop = {
     cards: CardInfo[] | undefined,
@@ -13,17 +14,20 @@ type Prop = {
     rowCount?: number,
     gap?: number,
     cardsObtainedCount?: CardsObtainedCount[],
-    cardsSelled?: Function
+    cardsSelled?: Function,
+    cardsSelectable?: boolean | null
 };
 
 export default function CardDisplay(props: Prop) {
     const [expandedCard, setExpandedCard] = useState<CardInfo | null>(null);
     const { width, height } = Dimensions.get('window');
     const [cardsObtainedCountNumber, setCardsObtainedCountNumber] = useState<number | undefined>(0);
+    const [selectedCards, setSelectedCards] = useState<number[] | null>(null);
 
     const cardsSelled = (ids: number[]) => {
         props.cardsSelled?.(ids)
         setExpandedCard(null);
+        setSelectedCards(null);
     }
 
     useEffect(() => {
@@ -32,6 +36,16 @@ export default function CardDisplay(props: Prop) {
                 ?.find(c => c.shopCardId == expandedCard.id)
                 ?.count);
     }, [expandedCard]);
+
+    useEffect(() => {
+        setSelectedCards(props.cardsSelectable ? [] : null);
+    }, [props.cardsSelectable]);
+
+    const sendSellCardRequest = () => {
+        cards.sellCardById(selectedCards)
+
+        selectedCards && cardsSelled(selectedCards)
+    }
 
     const styles = StyleSheet.create({
         container: {
@@ -61,6 +75,15 @@ export default function CardDisplay(props: Prop) {
         expanded_card_info: {
             backgroundColor: 'white',
             width: 300
+        },
+        confirm_sell: {
+            width: 60,
+            height: 60,
+            borderRadius: 30,
+            backgroundColor: 'green',
+            position: 'absolute',
+            bottom: 50,
+            right: 10,
         }
     });
 
@@ -73,6 +96,18 @@ export default function CardDisplay(props: Prop) {
                         image={card.images.small}
                         width={props.cardWidth ?? 75}
                         onPress={() => setExpandedCard(card)}
+                        selectedIds={selectedCards}
+                        select={() => {
+                            setSelectedCards(prev => {
+                                if (!prev) return [card.id ?? 0];
+                                if (prev.includes(card.id ?? 0)) {
+                                    return prev.filter(id => id !== (card.id ?? 0));
+                                } else {
+                                    return [...prev, card.id ?? 0];
+                                }
+                            });
+                        }}
+                        id={Number(card.id)}
                     />
                 )
             }
@@ -85,6 +120,10 @@ export default function CardDisplay(props: Prop) {
                 cardsObtainedCount={cardsObtainedCountNumber}
                 cardsSelled={cardsSelled}
             />
+        }
+        {
+            props.cardsSelectable && selectedCards && selectedCards.length > 0 &&
+            <Pressable onPress={() => sendSellCardRequest()} style={styles.confirm_sell}/>
         }
     </>
 }

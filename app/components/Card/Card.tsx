@@ -10,7 +10,10 @@ import Animated, {
 export type Props = {
     image: string,
     width: number,
-    onPress?: Function
+    onPress?: Function,
+    selectedIds?: number[] | null,
+    select?: Function,
+    id?: null | number
 }
 
 export default function Card(props: Props) {
@@ -28,9 +31,7 @@ export default function Card(props: Props) {
         });
 
     const tapGesture = Gesture.Tap()
-        .onEnd(() => {
-            props.onPress?.()
-        })
+        .onEnd(() => (props.selectedIds != null ? props.select : props.onPress)?.())
         .runOnJS(true);
 
     const gesture = Gesture.Simultaneous(tapGesture, panGesture);
@@ -54,6 +55,18 @@ export default function Card(props: Props) {
                     <Image source={{ uri: props.image }} style={styles.image} />
                 </Animated.View>
             </GestureDetector>
+
+            {
+                props.selectedIds != null && props.id != null &&
+                <View
+                    style={[styles.selectable_icon,
+                    props.selectedIds.includes(props.id)
+                        ? styles.selected_icon
+                        : styles.not_selected_icon
+                    ]}
+                >
+                </View>
+            }
         </View>
     );
 }
@@ -62,6 +75,7 @@ const styles = StyleSheet.create({
     container: {
         justifyContent: 'center',
         alignItems: 'center',
+        position: 'relative'
     },
     card: {
         borderRadius: 12,
@@ -77,4 +91,20 @@ const styles = StyleSheet.create({
         height: '100%',
         resizeMode: 'cover'
     },
+    selectable_icon: {
+        position: 'absolute',
+        bottom: -5,
+        right: -5,
+        width: 20,
+        height: 20,
+        borderRadius: 10,
+        borderWidth: 2,
+        borderColor: 'black',
+    },
+    not_selected_icon: {
+        backgroundColor: 'black',
+    },
+    selected_icon: {
+        backgroundColor: 'red',
+    }
 });

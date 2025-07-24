@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Dimensions, StyleSheet, Text, View } from "react-native";
+import { Dimensions, Pressable, StyleSheet, Text, View } from "react-native";
 import CardDisplay from "../components/Card/CardDisplay";
 import { CardInfo, CardsInfoAndTotalCount } from "../types/CardType";
 import Cards from "../api/cards";
@@ -10,6 +10,7 @@ import GlobalVariables from "../utils/GlobalVariables";
 import Constants from "../utils/Constants";
 import { Button } from "react-native-paper";
 import { useNavigation } from "expo-router";
+import Icon from "react-native-vector-icons/MaterialIcons";
 
 export default function CardsScreen() {
     const navigate = useNavigation();
@@ -17,6 +18,7 @@ export default function CardsScreen() {
     const [filtersApplied, setFiltersApplied] = useState<CardsFiltersApplied | null>(null);
     const [page, setPage] = useState<number>(0);
     const [totalPageCount, setTotalPageCount] = useState<number>(0);
+    const [sellCardsSelectable, setSellCardsSelectable] = useState<boolean | null>(null);
 
     useEffect(() => {
         const requestMyCards = async (): Promise<void> => {
@@ -63,6 +65,10 @@ export default function CardsScreen() {
             </View>
         </View>
 
+        <Pressable onPress={() => setSellCardsSelectable(!sellCardsSelectable)} style={styles.sell_cards_icon}>
+            <Icon name="delete-outline" size={30} color={'white'} />
+        </Pressable>
+
         <CardDisplay
             cards={cardsToDisplay}
             internal={true}
@@ -70,6 +76,7 @@ export default function CardsScreen() {
             cardWidth={85}
             rowCount={4}
             cardsSelled={updateCardsSelleds}
+            cardsSelectable={sellCardsSelectable}
         />
 
         <PageController
@@ -118,6 +125,12 @@ const styles = StyleSheet.create({
     },
     filter_text: {
         color: '#bfc7d5'
+    },
+    sell_cards_icon: {
+        backgroundColor: 'red',
+        borderRadius: '50%',
+        alignSelf: 'center',
+        padding: 4
     },
     manage_decks_button: {
         backgroundColor: 'blue'

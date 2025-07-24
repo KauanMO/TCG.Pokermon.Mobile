@@ -64,9 +64,9 @@ const cardsObtainedSet = async (setId: number): Promise<CardsObtainedCount[]> =>
     }
 }
 
-const sellCardById = async (ids: (number | null)[]): Promise<void> => {
+const sellCardById = async (ids: (number|null)[] | null): Promise<void> => {
     try {
-        const query = ids.map(id => `ids=${id}`).join('&');
+        const query = ids?.map(id => `ids=${id}`).join('&');
 
         await axios.delete(`${baseUrl}/sell?${query}`, {
             headers: {
