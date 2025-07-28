@@ -23,7 +23,7 @@ export default function DecksManagerScreen() {
 
         {
             myDecks && myDecks[0] && myDecks.map(deck => {
-                return <View>
+                return <View key={deck.id}>
                     <Text>{deck.name}</Text>
                 </View>
             })
