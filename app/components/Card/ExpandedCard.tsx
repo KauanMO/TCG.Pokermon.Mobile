@@ -37,7 +37,7 @@ export default function ExpandedCard(props: Props) {
                     <Text style={[styles.card_info_text, styles.card_text]}>{props.card.rarity}</Text>
                 </View>
                 {
-                    props.cardsObtainedCount && <View>
+                    props.cardsObtainedCount !== undefined && <View>
                         <Text style={[styles.card_info_text, styles.card_text]}>({props.cardsObtainedCount})</Text>
                     </View>
                 }
@@ -53,10 +53,10 @@ export default function ExpandedCard(props: Props) {
                             <Text style={[styles.card_info_text, styles.card_text]}>{props.card.description}</Text>
                         }
                         <Text style={[styles.card_info_text, styles.card_text]}>
-                            Tipos: {props.card.types.join(', ')}
+                            Tipos: {props.card.types?.join(', ') ?? ''}
                         </Text>
                         <Text style={[styles.card_info_text, styles.card_text]}>
-                            Subtipos: {props.card.subTypes.join(', ')}
+                            Subtipos: {props.card.subTypes?.join(', ') ?? ''}
                         </Text>
                         <Pressable onPress={() => setSellCardModalOpen(true)} style={styles.sell_card_icon}>
                             <Icon name="delete-outline" size={30} color={'white'} />
