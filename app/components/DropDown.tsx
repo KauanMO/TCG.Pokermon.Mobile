@@ -20,7 +20,7 @@ const CardTypesDropDownPicker = ({ onChangeItems }: { onChangeItems: (values: st
     const [value, setValue] = useState(null);
     const [items, setItems] = useState<ItemType<string>[]>([
         { value: 'BUG', icon: () => <Image source={require('@/assets/icons/cardTypes/bug.png')} style={styles.icon} /> },
-        { value: 'DARKNESS', icon: () => <Image source={require('@/assets/icons/cardTypes/dark.png')} style={styles.icon} /> },
+        { value: 'DARKNESS', icon: () => <Image source={require('@/assets/icons/cardTypes/darkness.png')} style={styles.icon} /> },
         { value: 'DRAGON', icon: () => <Image source={require('@/assets/icons/cardTypes/dragon.png')} style={styles.icon} /> },
         { value: 'LIGHTNING', icon: () => <Image source={require('@/assets/icons/cardTypes/eletric.png')} style={styles.icon} /> },
         { value: 'FAIRY', icon: () => <Image source={require('@/assets/icons/cardTypes/fairy.png')} style={styles.icon} /> },

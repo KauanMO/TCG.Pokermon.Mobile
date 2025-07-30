@@ -10,7 +10,6 @@ import Constants from "../utils/Constants";
 
 export default function HomeScreen() {
     const navigation = useNavigation();
-    // const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
 
     useEffect(() => {
         const requestUserInfo = async () => {
